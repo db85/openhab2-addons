@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
@@ -33,10 +32,10 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Bauer
  */
 @Component(service = HttpServlet.class, configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true)
-public class HP100WebHookServlet extends HttpServlet {
+public class HP1000WebHookServlet extends HttpServlet {
 
-    private static final String PATH = "/hp1000";
-    private final Logger logger = LoggerFactory.getLogger(HP100WebHookServlet.class);
+    private static final String PATH = "/weatherstation";
+    private final Logger logger = LoggerFactory.getLogger(HP1000WebHookServlet.class);
 
     private HttpService httpService;
 
@@ -64,12 +63,40 @@ public class HP100WebHookServlet extends HttpServlet {
         logger.info("HP1000 webhook servlet stopped");
     }
 
+    // GET /weatherstation/updateweatherstation.php?
+    // ID=wetter&
+    // PASSWORD=wetter&
+    // tempf=41.9&
+    // humidity=99&
+    // dewptf=41.7&
+    // windchillf=41.9&
+    // winddir=182&
+    // windspeedmph=0.00&
+    // windgustmph=0.00&
+    // rainin=0.00&
+    // dailyrainin=0.00&
+    // weeklyrainin=1.57&
+    // monthlyrainin=1.64&
+    // yearlyrainin=1.64&
+    // solarradiation=67.98&
+    // UV=1
+    // &indoortempf=64.4&
+    // indoorhumidity=51&
+    // baromin=29.03&
+    // lowbatt=2&
+    // dateutc=2018-1-8%2010:49:5&
+    // softwaretype=Weather%20logger%20V2.2.2&
+    // action=updateraw&
+    // realtime=1&rtfreq=5
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String requestStr = IOUtils.toString(request.getInputStream());
-        logger.info("HP1000 webhook input: {}", requestStr);
         response.getWriter().write("");
+
+        String path = request.getPathInfo();
+        if ("/updateweatherstation.php".equalsIgnoreCase(path)) {
+
+        }
     }
 
     @Reference

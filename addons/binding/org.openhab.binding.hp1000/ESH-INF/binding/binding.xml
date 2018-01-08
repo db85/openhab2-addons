@@ -5,7 +5,7 @@
 				 xsi:schemaLocation="http://eclipse.org/smarthome/schemas/binding/v1.0.0 http://eclipse.org/smarthome/schemas/binding-1.0.0.xsd">
 
 	<name>HP1000 Binding</name>
-	<description>This is the binding for HP1000.</description>
+	<description>Binding for weather stations HP1000/WH2600 etc. </description>
 	<author>Daniel Bauer</author>
 
 </binding:binding>

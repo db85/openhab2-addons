@@ -21,13 +21,13 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
  *
  * @author Daniel Bauer - Initial contribution
  */
- @NonNullByDefault
+@NonNullByDefault
 public class HP1000BindingConstants {
 
     private static final String BINDING_ID = "hp1000";
 
     // List of all Thing Type UIDs
-    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "sample");
+    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "weatherstation");
 
     // List of all Channel ids
     public static final String CHANNEL_1 = "channel1";
