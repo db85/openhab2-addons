@@ -8,6 +8,8 @@
  */
 package org.openhab.binding.hp1000.internal;
 
+import static org.openhab.binding.hp1000.HP1000BindingConstants.*;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -21,6 +23,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 import org.slf4j.Logger;
@@ -34,10 +38,10 @@ import org.slf4j.LoggerFactory;
 @Component(service = HttpServlet.class, configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true)
 public class HP1000WebHookServlet extends HttpServlet {
 
-    private static final String PATH = "/weatherstation";
     private final Logger logger = LoggerFactory.getLogger(HP1000WebHookServlet.class);
 
     private HttpService httpService;
+    private HP1000HandlerFactory handlerFactory;
 
     /**
      * OSGi activation callback.
@@ -47,8 +51,8 @@ public class HP1000WebHookServlet extends HttpServlet {
     @Activate
     protected void activate(Map<String, Object> config) {
         try {
-            httpService.registerServlet(PATH, this, null, httpService.createDefaultHttpContext());
-            logger.info("Started HP1000 Webhook servlet at {}", PATH);
+            httpService.registerServlet(SERVLET_BINDING_ALIAS, this, null, httpService.createDefaultHttpContext());
+            logger.info("Started HP1000 Webhook servlet at {}", SERVLET_BINDING_ALIAS);
         } catch (ServletException | NamespaceException exception) {
             logger.error("Could not start HP1000 Webhook servlet: {}", exception.getMessage(), exception);
         }
@@ -94,8 +98,8 @@ public class HP1000WebHookServlet extends HttpServlet {
         response.getWriter().write("");
 
         String path = request.getPathInfo();
-        if ("/updateweatherstation.php".equalsIgnoreCase(path)) {
-
+        if (WEBHOOL_PATH.equalsIgnoreCase(path)) {
+            handlerFactory.webHookEvent(request.getRemoteHost());
         }
     }
 
@@ -106,5 +110,14 @@ public class HP1000WebHookServlet extends HttpServlet {
 
     public void unsetHttpService(HttpService httpService) {
         this.httpService = null;
+    }
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL, policy = ReferencePolicy.DYNAMIC)
+    public void setHP1000HandlerFactory(HP1000HandlerFactory handlerFactory) {
+        this.handlerFactory = handlerFactory;
+    }
+
+    public void unsetHP1000HandlerFactory(HP1000HandlerFactory handlerFactory) {
+        this.handlerFactory = null;
     }
 }

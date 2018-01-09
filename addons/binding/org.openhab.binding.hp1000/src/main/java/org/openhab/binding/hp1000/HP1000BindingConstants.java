@@ -32,4 +32,10 @@ public class HP1000BindingConstants {
     // List of all Channel ids
     public static final String CHANNEL_1 = "channel1";
 
+    // Webhook path
+    public static final String SERVLET_BINDING_ALIAS = "/weatherstation";
+    public static final String WEBHOOL_PATH = "/updateweatherstation.php";
+
+    // Config parameters
+    public static final String CONFIG_PARAMETER_HOST_NAME = "hostname";
 }

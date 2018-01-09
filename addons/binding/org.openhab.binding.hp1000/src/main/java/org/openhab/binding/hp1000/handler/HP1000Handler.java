@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.hp1000.handler;
 
-import static org.openhab.binding.hp1000.HP1000BindingConstants.*;
+import static org.openhab.binding.hp1000.HP1000BindingConstants.CHANNEL_1;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.thing.ChannelUID;
@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Daniel Bauer - Initial contribution
  */
- @NonNullByDefault
+@NonNullByDefault
 public class HP1000Handler extends BaseThingHandler {
 
     private final Logger logger = LoggerFactory.getLogger(HP1000Handler.class);
@@ -62,5 +62,9 @@ public class HP1000Handler extends BaseThingHandler {
         // as expected. E.g.
         // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
         // "Can not access device as username and/or password are invalid");
+    }
+
+    public void webHookEvent() {
+
     }
 }
