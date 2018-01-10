@@ -1,4 +1,4 @@
-package org.openhab.binding.hp1000.handler;
+package org.openhab.binding.hp1000;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jdt.annotation.Nullable;
@@ -7,7 +7,7 @@ import org.eclipse.smarthome.core.library.types.StringType;
 import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.core.types.UnDefType;
 
-public final class ConverterUtils {
+public final class StateConverterUtils {
 
     @Nullable
     public static Double parseDouble(String value) {
@@ -26,7 +26,7 @@ public final class ConverterUtils {
         return (value == null) ? UnDefType.NULL : new StringType(value);
     }
 
-    private ConverterUtils() {
+    private StateConverterUtils() {
         // utils class
     }
 }

@@ -21,10 +21,14 @@ import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
+import org.eclipse.smarthome.core.thing.type.ChannelType;
+import org.eclipse.smarthome.core.thing.type.ChannelTypeRegistry;
 import org.eclipse.smarthome.core.thing.type.ChannelTypeUID;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.core.types.UnDefType;
+import org.openhab.binding.hp1000.StateConverterUtils;
+import org.openhab.binding.hp1000.UnitConverterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,10 +41,12 @@ import org.slf4j.LoggerFactory;
 @NonNullByDefault
 public class HP1000Handler extends BaseThingHandler {
 
+    private ChannelTypeRegistry channelTypeRegistry;
     private final Logger logger = LoggerFactory.getLogger(HP1000Handler.class);
 
-    public HP1000Handler(Thing thing) {
+    public HP1000Handler(ChannelTypeRegistry channelTypeRegistry, Thing thing) {
         super(thing);
+        this.channelTypeRegistry = channelTypeRegistry;
     }
 
     private State buildChannelState(Channel channel, String value) {
@@ -50,9 +56,14 @@ public class HP1000Handler extends BaseThingHandler {
         }
         switch (acceptedItemType) {
             case "Number":
-                return ConverterUtils.toDecimalType(ConverterUtils.parseDouble(value));
+                Double doubleValue = StateConverterUtils.parseDouble(value);
+                ChannelType channelType = channelTypeRegistry.getChannelType(channel.getChannelTypeUID());
+                if (doubleValue != null && channelType != null && channelType.getState().getPattern().contains("°C")) {
+                    doubleValue = UnitConverterUtils.fahrenheitToCelius(doubleValue);
+                }
+                return StateConverterUtils.toDecimalType(doubleValue);
             case "String":
-                return ConverterUtils.toStringType(value);
+                return StateConverterUtils.toStringType(value);
             default:
                 logger.error("accepted item type {} not handeled", channel.getAcceptedItemType());
         }
@@ -61,7 +72,7 @@ public class HP1000Handler extends BaseThingHandler {
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        // no commands to handle
+        // not supported
     }
 
     @Override
@@ -71,13 +82,10 @@ public class HP1000Handler extends BaseThingHandler {
 
     public void webHookEvent(Map<String, String[]> paramterMap) {
         getThing().getChannels().stream().forEach(channel -> {
-            // ChannelUID channelUID = new ChannelUID(this.getThing().getUID(), channelID);
-            // updateState(channelUID, state);
             ChannelTypeUID channelTypeUID = channel.getChannelTypeUID();
             if (channelTypeUID == null) {
                 return;
             }
-
             String channelId = channelTypeUID.getId();
             Optional<String> parameterKey = paramterMap.keySet().stream().filter(key -> key.equalsIgnoreCase(channelId))
                     .findFirst();
