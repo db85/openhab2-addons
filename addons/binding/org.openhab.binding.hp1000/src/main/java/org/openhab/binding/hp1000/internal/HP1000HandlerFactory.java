@@ -17,6 +17,7 @@ import static org.openhab.binding.hp1000.HP1000BindingConstants.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,8 @@ import org.osgi.service.component.annotations.Component;
  *
  * @author Daniel Bauer - Initial contribution
  */
-@Component(service = ThingHandlerFactory.class, immediate = true, configurationPid = "binding.hp1000")
+@Component(service = { ThingHandlerFactory.class,
+        HP1000HandlerFactory.class }, immediate = true, configurationPid = "binding.hp1000")
 @NonNullByDefault
 public class HP1000HandlerFactory extends BaseThingHandlerFactory {
 
@@ -69,14 +71,14 @@ public class HP1000HandlerFactory extends BaseThingHandlerFactory {
         super.removeHandler(thingHandler);
     }
 
-    public void webHookEvent(String host) {
+    public void webHookEvent(String host, Map<String, String[]> paramterMap) {
         handlerList.stream().filter(handler -> {
             Object hostConfig = handler.getThing().getConfiguration().get(CONFIG_PARAMETER_HOST_NAME);
             if (hostConfig == null) {
                 return false;
             }
-            return hostConfig.toString().equals(host);
-        }).forEach(handler -> handler.webHookEvent());
+            return hostConfig.toString().equalsIgnoreCase(host);
+        }).forEach(handler -> handler.webHookEvent(paramterMap));
     }
 
 }

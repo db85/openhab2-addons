@@ -12,14 +12,19 @@
  */
 package org.openhab.binding.hp1000.handler;
 
-import static org.openhab.binding.hp1000.HP1000BindingConstants.CHANNEL_1;
+import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.smarthome.core.thing.Channel;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
+import org.eclipse.smarthome.core.thing.type.ChannelTypeUID;
 import org.eclipse.smarthome.core.types.Command;
+import org.eclipse.smarthome.core.types.State;
+import org.eclipse.smarthome.core.types.UnDefType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,33 +43,52 @@ public class HP1000Handler extends BaseThingHandler {
         super(thing);
     }
 
+    private State buildChannelState(Channel channel, String value) {
+        String acceptedItemType = channel.getAcceptedItemType();
+        if (acceptedItemType == null) {
+            return UnDefType.NULL;
+        }
+        switch (acceptedItemType) {
+            case "Number":
+                return ConverterUtils.toDecimalType(ConverterUtils.parseDouble(value));
+            case "String":
+                return ConverterUtils.toStringType(value);
+            default:
+                logger.error("accepted item type {} not handeled", channel.getAcceptedItemType());
+        }
+        return UnDefType.NULL;
+    }
+
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        if (channelUID.getId().equals(CHANNEL_1)) {
-            // TODO: handle command
-
-            // Note: if communication with thing fails for some reason,
-            // indicate that by setting the status with detail information
-            // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
-            // "Could not control device at IP address x.x.x.x");
-        }
+        // no commands to handle
     }
 
     @Override
     public void initialize() {
-        // TODO: Initialize the thing. If done set status to ONLINE to indicate proper working.
-        // Long running initialization should be done asynchronously in background.
         updateStatus(ThingStatus.ONLINE);
-
-        // Note: When initialization can NOT be done set the status with more details for further
-        // analysis. See also class ThingStatusDetail for all available status details.
-        // Add a description to give user information to understand why thing does not work
-        // as expected. E.g.
-        // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-        // "Can not access device as username and/or password are invalid");
     }
 
-    public void webHookEvent() {
+    public void webHookEvent(Map<String, String[]> paramterMap) {
+        getThing().getChannels().stream().forEach(channel -> {
+            // ChannelUID channelUID = new ChannelUID(this.getThing().getUID(), channelID);
+            // updateState(channelUID, state);
+            ChannelTypeUID channelTypeUID = channel.getChannelTypeUID();
+            if (channelTypeUID == null) {
+                return;
+            }
 
+            String channelId = channelTypeUID.getId();
+            Optional<String> parameterKey = paramterMap.keySet().stream().filter(key -> key.equalsIgnoreCase(channelId))
+                    .findFirst();
+            if (parameterKey.isPresent()) {
+                String[] parameterValues = paramterMap.get(parameterKey.get());
+                if (parameterValues.length > 0) {
+                    updateState(channel.getUID(), buildChannelState(channel, parameterValues[0]));
+                }
+            } else {
+                logger.error("parameter map not contains channelId {}", channelId);
+            }
+        });
     }
 }

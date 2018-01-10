@@ -63,7 +63,7 @@ public class HP1000WebHookServlet extends HttpServlet {
      */
     @Deactivate
     protected void deactivate() {
-        httpService.unregister(PATH);
+        httpService.unregister(SERVLET_BINDING_ALIAS);
         logger.info("HP1000 webhook servlet stopped");
     }
 
@@ -98,8 +98,8 @@ public class HP1000WebHookServlet extends HttpServlet {
         response.getWriter().write("");
 
         String path = request.getPathInfo();
-        if (WEBHOOL_PATH.equalsIgnoreCase(path)) {
-            handlerFactory.webHookEvent(request.getRemoteHost());
+        if (handlerFactory != null && WEBHOOL_PATH.equalsIgnoreCase(path)) {
+            handlerFactory.webHookEvent(request.getRemoteHost(), request.getParameterMap());
         }
     }
 
