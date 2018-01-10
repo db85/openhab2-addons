@@ -21,15 +21,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
+import org.eclipse.smarthome.core.thing.type.ChannelTypeRegistry;
 import org.openhab.binding.hp1000.handler.HP1000Handler;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * The {@link HP1000HandlerFactory} is responsible for creating things and thing
@@ -39,23 +42,24 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(service = { ThingHandlerFactory.class,
         HP1000HandlerFactory.class }, immediate = true, configurationPid = "binding.hp1000")
-@NonNullByDefault
 public class HP1000HandlerFactory extends BaseThingHandlerFactory {
 
     private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_SAMPLE);
     private List<HP1000Handler> handlerList = new ArrayList<>();
+    private ChannelTypeRegistry channelTypeRegistry;
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
         if (thingTypeUID.equals(THING_TYPE_SAMPLE)) {
-            HP1000Handler handler = new HP1000Handler(thing);
+            HP1000Handler handler = new HP1000Handler(channelTypeRegistry, thing);
             handlerList.add(handler);
             return handler;
         }
 
         return null;
+
     }
 
     @Override
@@ -79,6 +83,15 @@ public class HP1000HandlerFactory extends BaseThingHandlerFactory {
             }
             return hostConfig.toString().equalsIgnoreCase(host);
         }).forEach(handler -> handler.webHookEvent(paramterMap));
+    }
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL, policy = ReferencePolicy.DYNAMIC)
+    protected void setChannelTypeRegistry(ChannelTypeRegistry channelTypeRegistry) {
+        this.channelTypeRegistry = channelTypeRegistry;
+    }
+
+    protected void unsetChannelTypeRegistry(ChannelTypeRegistry channelTypeRegistry) {
+        this.channelTypeRegistry = null;
     }
 
 }
