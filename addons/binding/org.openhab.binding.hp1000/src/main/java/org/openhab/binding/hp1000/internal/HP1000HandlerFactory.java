@@ -44,15 +44,16 @@ import org.osgi.service.component.annotations.ReferencePolicy;
         HP1000HandlerFactory.class }, immediate = true, configurationPid = "binding.hp1000")
 public class HP1000HandlerFactory extends BaseThingHandlerFactory {
 
-    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_SAMPLE);
-    private List<HP1000Handler> handlerList = new ArrayList<>();
+    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections
+            .singleton(THING_TYPE_WEATHER_STATION);
     private ChannelTypeRegistry channelTypeRegistry;
+    private List<HP1000Handler> handlerList = new ArrayList<>();
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
-        if (thingTypeUID.equals(THING_TYPE_SAMPLE)) {
+        if (thingTypeUID.equals(THING_TYPE_WEATHER_STATION)) {
             HP1000Handler handler = new HP1000Handler(channelTypeRegistry, thing);
             handlerList.add(handler);
             return handler;
@@ -63,16 +64,25 @@ public class HP1000HandlerFactory extends BaseThingHandlerFactory {
     }
 
     @Override
-    public boolean supportsThingType(ThingTypeUID thingTypeUID) {
-        return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
-    }
-
-    @Override
     protected void removeHandler(ThingHandler thingHandler) {
         handlerList.removeAll(handlerList.stream()
                 .filter(handler -> handler.getThing().getUID().equals(thingHandler.getThing().getUID()))
                 .collect(Collectors.toList()));
         super.removeHandler(thingHandler);
+    }
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL, policy = ReferencePolicy.DYNAMIC)
+    protected void setChannelTypeRegistry(ChannelTypeRegistry channelTypeRegistry) {
+        this.channelTypeRegistry = channelTypeRegistry;
+    }
+
+    @Override
+    public boolean supportsThingType(ThingTypeUID thingTypeUID) {
+        return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
+    }
+
+    protected void unsetChannelTypeRegistry(ChannelTypeRegistry channelTypeRegistry) {
+        this.channelTypeRegistry = null;
     }
 
     public void webHookEvent(String host, Map<String, String[]> paramterMap) {
@@ -83,15 +93,6 @@ public class HP1000HandlerFactory extends BaseThingHandlerFactory {
             }
             return hostConfig.toString().equalsIgnoreCase(host);
         }).forEach(handler -> handler.webHookEvent(paramterMap));
-    }
-
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL, policy = ReferencePolicy.DYNAMIC)
-    protected void setChannelTypeRegistry(ChannelTypeRegistry channelTypeRegistry) {
-        this.channelTypeRegistry = channelTypeRegistry;
-    }
-
-    protected void unsetChannelTypeRegistry(ChannelTypeRegistry channelTypeRegistry) {
-        this.channelTypeRegistry = null;
     }
 
 }
