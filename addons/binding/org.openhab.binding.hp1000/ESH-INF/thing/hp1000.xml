@@ -5,7 +5,7 @@
 
 	<thing-type id="weatherstation">
 		<label>Weather Station</label>
-		<description>Weather Station</description>
+		<description>Wetterstation HP100X/WH260X</description>
 
 		<channels>
 			<channel id="tempf" typeId="tempf" />
@@ -45,7 +45,7 @@
 	<channel-type id="tempf">
 		<item-type>Number</item-type>
 		<label>Outdoor Temperature</label>
-		<description>Outdoor Temperature</description>
+		<description>Current outdoor temperature</description>
 		<category>Temperature</category>
 		<state readOnly="true" pattern="%.1f °C" />
 	</channel-type>
@@ -53,7 +53,7 @@
 	<channel-type id="humidity">
 		<item-type>Number</item-type>
 		<label>Outdoor Humidity</label>
-		<description>Outdoor Humidity</description>
+		<description>Current outdoor humidity</description>
 		<category>Humidity</category>
 		<state readOnly="true" pattern="%d %%" />
 	</channel-type>
@@ -61,7 +61,7 @@
 	<channel-type id="dewptf">
 		<item-type>Number</item-type>
 		<label>Dewpoint</label>
-		<description>Dewpoint</description>
+		<description>Current dewpoint</description>
 		<category>Temperature</category>
 		<state readOnly="true" pattern="%.1f °C" />
 	</channel-type>
@@ -69,7 +69,7 @@
 	<channel-type id="windchillf">
 		<item-type>Number</item-type>
 		<label>Windchill</label>
-		<description>Windchill</description>
+		<description>Current windchill</description>
 		<category>Temperature</category>
 		<state readOnly="true" pattern="%.1f °C" />
 	</channel-type>
@@ -77,7 +77,7 @@
 	<channel-type id="winddir">
 		<item-type>String</item-type>
 		<label>Wind Degree</label>
-		<description>Wind Degree</description>
+		<description>Current wind degree</description>
 		<category>Wind</category>
 		<state readOnly="true" pattern="%s °" />
 	</channel-type>
@@ -85,7 +85,7 @@
 	<channel-type id="windspeedmph">
 		<item-type>Number</item-type>
 		<label>Wind Speed</label>
-		<description>Wind Speed</description>
+		<description>Current wind speed</description>
 		<category>Wind</category>
 		<state readOnly="true" pattern="%.1f km/h" />
 	</channel-type>
@@ -93,7 +93,7 @@
 	<channel-type id="windgustmph">
 		<item-type>Number</item-type>
 		<label>Gust Speed</label>
-		<description>Gust Speed</description>
+		<description>Current gust speed</description>
 		<category>Wind</category>
 		<state readOnly="true" pattern="%.1f km/h" />
 	</channel-type>
@@ -143,14 +143,14 @@
 		<label>Solar Radiation</label>
 		<description>Solar Radiation</description>
 		<category>Light</category>
-		<state readOnly="true" pattern="%.2f lux" />
+		<state readOnly="true" pattern="%.2f w/m²" />
 	</channel-type>
 
 	<channel-type id="uv">
 		<item-type>Number</item-type>
 		<label>UV</label>
 		<description>UV</description>
-		<category>Temperature</category>
+		<category>Light</category>
 		<state readOnly="true" pattern="%.2f index" />
 	</channel-type>
 
@@ -175,7 +175,7 @@
 		<label>Pressure</label>
 		<description>Pressure</description>
 		<category>Pressure</category>
-		<state readOnly="true" pattern="%.2f mb" />
+		<state readOnly="true" pattern="%.1f hPa" />
 	</channel-type>
 
 	<channel-type id="lowbatt">
@@ -187,11 +187,11 @@
 	</channel-type>
 
 	<channel-type id="dateutc">
-		<item-type>String</item-type>
+		<item-type>DateTime</item-type>
 		<label>Date UTC</label>
 		<description>Date UTC</description>
 		<category>Date</category>
-		<state readOnly="true" pattern="%s" />
+		<state readOnly="true" />
 	</channel-type>
 
 	<channel-type id="softwaretype">

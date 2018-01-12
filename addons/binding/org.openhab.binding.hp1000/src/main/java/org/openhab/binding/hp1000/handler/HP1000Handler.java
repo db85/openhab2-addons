@@ -27,8 +27,6 @@ import org.eclipse.smarthome.core.thing.type.ChannelTypeUID;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.core.types.UnDefType;
-import org.openhab.binding.hp1000.StateConverterUtils;
-import org.openhab.binding.hp1000.UnitConverterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,17 +55,37 @@ public class HP1000Handler extends BaseThingHandler {
         switch (acceptedItemType) {
             case "Number":
                 Double doubleValue = StateConverterUtils.parseDouble(value);
-                ChannelType channelType = channelTypeRegistry.getChannelType(channel.getChannelTypeUID());
-                if (doubleValue != null && channelType != null && channelType.getState().getPattern().contains("°C")) {
-                    doubleValue = UnitConverterUtils.fahrenheitToCelius(doubleValue);
+                if (doubleValue != null) {
+                    doubleValue = formatUnits(channel, doubleValue);
                 }
                 return StateConverterUtils.toDecimalType(doubleValue);
             case "String":
                 return StateConverterUtils.toStringType(value);
+            case "DateTime":
+                return StateConverterUtils.toDateTimeType(value);
             default:
                 logger.error("accepted item type {} not handeled", channel.getAcceptedItemType());
         }
         return UnDefType.NULL;
+    }
+
+    private Double formatUnits(Channel channel, Double value) {
+        ChannelType channelType = channelTypeRegistry.getChannelType(channel.getChannelTypeUID());
+        if (channelType == null) {
+            return value;
+        }
+        String pattern = channelType.getState().getPattern();
+        if (pattern.contains("°C")) {
+            return UnitConverterUtils.fahrenheitToCelius(value);
+        } else if (pattern.contains("km/h")) {
+            return UnitConverterUtils.mphTokmh(value);
+        } else if (pattern.contains("mm")) {
+            return UnitConverterUtils.inchesToMillimeters(value);
+        } else if (pattern.contains("hPa")) {
+            return UnitConverterUtils.inhgToHpa(value);
+        }
+
+        return value;
     }
 
     @Override

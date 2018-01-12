@@ -26,16 +26,22 @@ public class HP1000BindingConstants {
 
     private static final String BINDING_ID = "hp1000";
 
-    // List of all Thing Type UIDs
-    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "weatherstation");
-
     // List of all Channel ids
     public static final String CHANNEL_1 = "channel1";
 
-    // Webhook path
-    public static final String SERVLET_BINDING_ALIAS = "/weatherstation";
-    public static final String WEBHOOL_PATH = "/updateweatherstation.php";
-
     // Config parameters
     public static final String CONFIG_PARAMETER_HOST_NAME = "hostname";
+
+    // Webhook path
+    public static final String SERVLET_BINDING_ALIAS = "/weatherstation";
+
+    // List of all Thing Type UIDs
+    public static final ThingTypeUID THING_TYPE_WEATHER_STATION = new ThingTypeUID(BINDING_ID, "weatherstation");
+
+    // Webhook date time format
+    public static final String WEBHOOK_DATE_TIME_FORMAT = "yyyy-M-d H:m:s";
+
+    // Webhook resource
+    public static final String WEBHOOK_PATH = "/updateweatherstation.php";
+
 }
