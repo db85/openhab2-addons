@@ -122,7 +122,7 @@
 		<state readOnly="true" pattern="%.2f mm" />
 	</channel-type>
 
-	<channel-type id="yearlyrainin">
+	<channel-type id="monthlyrainin">
 		<item-type>Number</item-type>
 		<label>Monthly Rain</label>
 		<description>Monthly rain in mm</description>
@@ -130,7 +130,7 @@
 		<state readOnly="true" pattern="%.2f mm" />
 	</channel-type>
 
-	<channel-type id="monthlyrainin">
+	<channel-type id="yearlyrainin">
 		<item-type>Number</item-type>
 		<label>Yearly Rain</label>
 		<description>Yearly rain in mm</description>
@@ -151,7 +151,7 @@
 		<label>UV</label>
 		<description>UV index</description>
 		<category>Light</category>
-		<state readOnly="true" pattern="%.2f index" />
+		<state readOnly="true" pattern="%d index" />
 	</channel-type>
 
 	<channel-type id="indoortempf">
