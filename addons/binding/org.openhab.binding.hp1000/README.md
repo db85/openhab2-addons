@@ -33,11 +33,11 @@ Password: {ignored}
 # Channels
 
 ```
-Number   WeatherStation_OutdoorTemperature "Outdoor Temperature [%.1f Â°C]" {channel="hp1000:weatherstation:8d435fd4:tempf"}
+Number   WeatherStation_OutdoorTemperature "Outdoor Temperature [%.1f °C]" {channel="hp1000:weatherstation:8d435fd4:tempf"}
 Number   WeatherStation_OutdoorHumidity    "Outdoor Humidity [%d %%]"      {channel="hp1000:weatherstation:8d435fd4:humidity"}
-Number   WeatherStation_Dewpoint           "Dewpoint [%.1f Â°C]"            {channel="hp1000:weatherstation:8d435fd4:dewptf"}
-Number   WeatherStation_Windchill          "Windchill [%.1f Â°C]"           {channel="hp1000:weatherstation:8d435fd4:windchillf"}
-String   WeatherStation_WindDegree         "Wind Degree [%s Â°]"            {channel="hp1000:weatherstation:8d435fd4:winddir"}
+Number   WeatherStation_Dewpoint           "Dewpoint [%.1f °C]"            {channel="hp1000:weatherstation:8d435fd4:dewptf"}
+Number   WeatherStation_Windchill          "Windchill [%.1f °C]"           {channel="hp1000:weatherstation:8d435fd4:windchillf"}
+String   WeatherStation_WindDegree         "Wind Degree [%s °]"            {channel="hp1000:weatherstation:8d435fd4:winddir"}
 Number   WeatherStation_WindSpeed          "Wind Speed [%.1f km/h"         {channel="hp1000:weatherstation:8d435fd4:windspeedmph"}
 Number   WeatherStation_GustSpeed          "Gust Speed  [%.1f km/h]"       {channel="hp1000:weatherstation:8d435fd4:windgustmph"}
 Number   WeatherStation_HourlyRainRate     "Hourly Rain Rate [%.2f mm]"    {channel="hp1000:weatherstation:8d435fd4:rainin"}
@@ -45,9 +45,9 @@ Number   WeatherStation_DailyRain          "Daily Rain [%.2f mm]"          {chan
 Number   WeatherStation_WeeklyRain         "Weekly Rain [%.2f mm]"         {channel="hp1000:weatherstation:8d435fd4:weeklyrainin"}
 Number   WeatherStation_MonthlyRain        "Monthly Rain [%.2f mm]"        {channel="hp1000:weatherstation:8d435fd4:monthlyrainin"}
 Number   WeatherStation_YearlyRain         "Yearly Rain [%.2f mm]"         {channel="hp1000:weatherstation:8d435fd4:yearlyrainin"}
-Number   WeatherStation_SolarRadiation     "Solar Radiation [%.2f w/mÂ²]"   {channel="hp1000:weatherstation:8d435fd4:solarradiation"}
+Number   WeatherStation_SolarRadiation     "Solar Radiation [%.2f w/m²]"   {channel="hp1000:weatherstation:8d435fd4:solarradiation"}
 Number   WeatherStation_UV                 "UV [%d index]"                 {channel="hp1000:weatherstation:8d435fd4:uv"}
-Number   WeatherStation_IndoorTemperature  "Indoor Temperature [%.1f Â°C]"  {channel="hp1000:weatherstation:8d435fd4:indoortempf"}
+Number   WeatherStation_IndoorTemperature  "Indoor Temperature [%.1f °C]"  {channel="hp1000:weatherstation:8d435fd4:indoortempf"}
 Number   WeatherStation_IndoorHumidity     "Indoor Humidity [%d %%]"       {channel="hp1000:weatherstation:8d435fd4:indoorhumidity"}
 Number   WeatherStation_Pressure           "Pressure [%.1f hPa]"           {channel="hp1000:weatherstation:8d435fd4:baromin"}
 String   WeatherStation_LowBatterie        "Low Batterie [%s]"             {channel="hp1000:weatherstation:8d435fd4:lowbatt"}
