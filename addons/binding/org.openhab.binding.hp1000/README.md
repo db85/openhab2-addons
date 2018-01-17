@@ -1,52 +1,59 @@
-# <bindingName> Binding
+# org.openhab.binding.hp1000
 
-_Give some details about what this binding is meant for - a protocol, system, specific device._
+HP100X/WH260X weather stations binding for OpenHab witch supports the personal weather station upload protocol.
 
-_If possible, provide some resources like pictures, a YouTube video, etc. to give an impression of what can be done with this binding. You can place such resources into a `doc` folder next to this README.md._
+# Thing Configuration
 
-## Supported Things
+Automatic discovery is not supported. You have to do a manual configuration.
 
-_Please describe the different supported things / devices within this section._
-_Which different types are supported, which models were tested etc.?_
-_Note that it is planned to generate some part of this based on the XML files within ```ESH-INF/thing``` of your binding._
+## Configuration Parameters
 
-## Discovery
+### Hostname or IP
 
-_Describe the available auto-discovery features here. Mention for what it works and what needs to be kept in mind when using it._
+It's important do add the correct weather station hostname or ip adress. You can bind mulitple weather stations and they all use the same webhook endpoint {OpenHap-IP-Adress}:{OpenHap-Port}/weatherstation/updateweatherstation.php. Depends on the request ip source the relevant thing will be updated.
 
-## Binding Configuration
+# Weather Station Configuration
 
-_If your binding requires or supports general configuration settings, please create a folder ```cfg``` and place the configuration file ```<bindingId>.cfg``` inside it. In this section, you should link to this file and provide some information about the options. The file could e.g. look like:_
+Open the weather station web interface and go to the section Weather Network.
+
+## Weather Station Settings
+
+Remote Server: Customized
+
+Server IP/Hostname: {OpenHap-IP-Adress}
+
+Server Port: {OpenHap-Port}
+
+Server Type: PHP
+
+Station ID: {ignored}
+
+Password: {ignored}
+  
+# Channels
 
 ```
-# Configuration for the Philips Hue Binding
-#
-# Default secret key for the pairing of the Philips Hue Bridge.
-# It has to be between 10-40 (alphanumeric) characters 
-# This may be changed by the user for security reasons.
-secret=EclipseSmartHome
+Number   WeatherStation_OutdoorTemperature "Outdoor Temperature [%.1f °C]" {channel="hp1000:weatherstation:8d435fd4:tempf"}
+Number   WeatherStation_OutdoorHumidity    "Outdoor Humidity [%d %%]"      {channel="hp1000:weatherstation:8d435fd4:humidity"}
+Number   WeatherStation_Dewpoint           "Dewpoint [%.1f °C]"            {channel="hp1000:weatherstation:8d435fd4:dewptf"}
+Number   WeatherStation_Windchill          "Windchill [%.1f °C]"           {channel="hp1000:weatherstation:8d435fd4:windchillf"}
+String   WeatherStation_WindDegree         "Wind Degree [%s °]"            {channel="hp1000:weatherstation:8d435fd4:winddir"}
+Number   WeatherStation_WindSpeed          "Wind Speed [%.1f km/h"         {channel="hp1000:weatherstation:8d435fd4:windspeedmph"}
+Number   WeatherStation_GustSpeed          "Gust Speed  [%.1f km/h]"       {channel="hp1000:weatherstation:8d435fd4:windgustmph"}
+Number   WeatherStation_HourlyRainRate     "Hourly Rain Rate [%.2f mm]"    {channel="hp1000:weatherstation:8d435fd4:rainin"}
+Number   WeatherStation_DailyRain          "Daily Rain [%.2f mm]"          {channel="hp1000:weatherstation:8d435fd4:dailyrainin"}
+Number   WeatherStation_WeeklyRain         "Weekly Rain [%.2f mm]"         {channel="hp1000:weatherstation:8d435fd4:weeklyrainin"}
+Number   WeatherStation_MonthlyRain        "Monthly Rain [%.2f mm]"        {channel="hp1000:weatherstation:8d435fd4:monthlyrainin"}
+Number   WeatherStation_YearlyRain         "Yearly Rain [%.2f mm]"         {channel="hp1000:weatherstation:8d435fd4:yearlyrainin"}
+Number   WeatherStation_SolarRadiation     "Solar Radiation [%.2f w/m²]"   {channel="hp1000:weatherstation:8d435fd4:solarradiation"}
+Number   WeatherStation_UV                 "UV [%d index]"                 {channel="hp1000:weatherstation:8d435fd4:uv"}
+Number   WeatherStation_IndoorTemperature  "Indoor Temperature [%.1f °C]"  {channel="hp1000:weatherstation:8d435fd4:indoortempf"}
+Number   WeatherStation_IndoorHumidity     "Indoor Humidity [%d %%]"       {channel="hp1000:weatherstation:8d435fd4:indoorhumidity"}
+Number   WeatherStation_Pressure           "Pressure [%.1f hPa]"           {channel="hp1000:weatherstation:8d435fd4:baromin"}
+String   WeatherStation_LowBatterie        "Low Batterie [%s]"             {channel="hp1000:weatherstation:8d435fd4:lowbatt"}
+DateTime WeatherStation_DateUTC            "Date UTC [%s]"                 {channel="hp1000:weatherstation:8d435fd4:dateutc"}
+String   WeatherStation_SoftwareType       "Software Type [%s]"            {channel="hp1000:weatherstation:8d435fd4:softwaretype"}
+String   WeatherStation_Realtime           "Realtime [%s]"                 {channel="hp1000:weatherstation:8d435fd4:realtime"}
+String   WeatherStation_UpdateFrequence    "Update Frequence [%s]"         {channel="hp1000:weatherstation:8d435fd4:rtfreq"}
+
 ```
-
-_Note that it is planned to generate some part of this based on the information that is available within ```ESH-INF/binding``` of your binding._
-
-_If your binding does not offer any generic configurations, you can remove this section completely._
-
-## Thing Configuration
-
-_Describe what is needed to manually configure a thing, either through the (Paper) UI or via a thing-file. This should be mainly about its mandatory and optional configuration parameters. A short example entry for a thing file can help!_
-
-_Note that it is planned to generate some part of this based on the XML files within ```ESH-INF/thing``` of your binding._
-
-## Channels
-
-_Here you should provide information about available channel types, what their meaning is and how they can be used._
-
-_Note that it is planned to generate some part of this based on the XML files within ```ESH-INF/thing``` of your binding._
-
-## Full Example
-
-_Provide a full usage example based on textual configuration files (*.things, *.items, *.sitemap)._
-
-## Any custom content here!
-
-_Feel free to add additional sections for whatever you think should also be mentioned about your binding!_
