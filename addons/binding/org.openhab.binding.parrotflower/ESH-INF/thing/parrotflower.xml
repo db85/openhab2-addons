@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="parrotflower" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+	<bridge-type id="parrotflowerapi">
+		<label>Parrot Flower Power API</label>
+		<description>This bridge represents the gateway to Parrot Flower Power API.</description>
+
+		<config-description>
+			<parameter name="clientId" type="text">
+				<label>Client ID</label>
+				<description>Client ID provided for the application you created on https://api-flower-power-pot.parrot.com/api_access/signup</description>
+				<required>true</required>
+			</parameter>
+
+			<parameter name="clientSecret" type="text">
+				<label>Client Secret</label>
+				<description>Client Secret provided for the application you created</description>
+				<required>true</required>
+			</parameter>
+
+			<parameter name="username" type="text">
+				<label>Username</label>
+				<description>Your Parrot Flower Power API username (email)</description>
+				<required>true</required>
+			</parameter>
+
+			<parameter name="password" type="text">
+				<label>Password</label>
+				<description>Your Parrot Flower Power API password</description>
+				<required>true</required>
+				<context>password</context>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+</thing:thing-descriptions>

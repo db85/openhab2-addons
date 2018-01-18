@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.2.0" configuration-pid="binding.hp1000" immediate="true" name="org.openhab.binding.hp1000.internal.HP1000HandlerFactory">
+   <service>
+      <provide interface="org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory"/>
+      <provide interface="org.openhab.binding.hp1000.internal.HP1000HandlerFactory"/>
+   </service>
+   <reference bind="setChannelTypeRegistry" cardinality="0..1" interface="org.eclipse.smarthome.core.thing.type.ChannelTypeRegistry" name="ChannelTypeRegistry" policy="dynamic" unbind="unsetChannelTypeRegistry"/>
+   <implementation class="org.openhab.binding.hp1000.internal.HP1000HandlerFactory"/>
+</scr:component>
