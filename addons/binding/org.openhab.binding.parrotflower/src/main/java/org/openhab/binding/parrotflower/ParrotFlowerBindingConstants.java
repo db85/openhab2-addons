@@ -27,10 +27,10 @@ public class ParrotFlowerBindingConstants {
     private static final String BINDING_ID = "parrotflower";
 
     // List of Bridge Type UIDs
-    public static final ThingTypeUID APIBRIDGE_THING_TYPE = new ThingTypeUID(BINDING_ID, "parrotflowerapi");
+    public static final ThingTypeUID THING_TYPE_BRIDGE = new ThingTypeUID(BINDING_ID, "parrotflowerapi");
 
     // List of all Thing Type UIDs
-    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "sample");
+    public static final ThingTypeUID THING_TYPE_USER_PROFILE = new ThingTypeUID(BINDING_ID, "userprofile");
 
     // List of all Channel ids
     public static final String CHANNEL_1 = "channel1";

@@ -12,10 +12,13 @@
  */
 package org.openhab.binding.parrotflower.internal;
 
-import static org.openhab.binding.parrotflower.ParrotFlowerBindingConstants.APIBRIDGE_THING_TYPE;
+import static org.openhab.binding.parrotflower.ParrotFlowerBindingConstants.*;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -25,6 +28,7 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
+import org.openhab.binding.parrotflower.handler.UserProfileHandler;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -33,11 +37,15 @@ import org.osgi.service.component.annotations.Component;
  *
  * @author Daniel Bauer - Initial contribution
  */
-@Component(service = ThingHandlerFactory.class, immediate = true, configurationPid = "binding.parrotflower")
+@Component(service = { ThingHandlerFactory.class,
+        ParrotFlowerHandlerFactory.class }, immediate = true, configurationPid = "binding.parrotflower")
 @NonNullByDefault
 public class ParrotFlowerHandlerFactory extends BaseThingHandlerFactory {
 
-    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(APIBRIDGE_THING_TYPE);
+    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Stream
+            .of(THING_TYPE_BRIDGE, THING_TYPE_USER_PROFILE).collect(Collectors.toSet());
+
+    private List<ParrotFlowerBridgeHandler> bridgeList = new ArrayList<>();
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -47,9 +55,25 @@ public class ParrotFlowerHandlerFactory extends BaseThingHandlerFactory {
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
-        if (thingTypeUID.equals(APIBRIDGE_THING_TYPE)) {
-            return new ParrotFlowerBridgeHandler((Bridge) thing);
+        if (thingTypeUID.equals(THING_TYPE_BRIDGE)) {
+            ParrotFlowerBridgeHandler bridge = new ParrotFlowerBridgeHandler((Bridge) thing);
+            bridgeList.add(bridge);
+            return bridge;
+        } else if (thingTypeUID.equals(THING_TYPE_USER_PROFILE)) {
+            return new UserProfileHandler(thing);
         }
         return null;
+    }
+
+    public List<ParrotFlowerBridgeHandler> getBridgeList() {
+        return bridgeList;
+    }
+
+    @Override
+    protected void removeHandler(ThingHandler thingHandler) {
+        bridgeList.removeAll(bridgeList.stream()
+                .filter(handler -> handler.getThing().getUID().equals(thingHandler.getThing().getUID()))
+                .collect(Collectors.toList()));
+        super.removeHandler(thingHandler);
     }
 }

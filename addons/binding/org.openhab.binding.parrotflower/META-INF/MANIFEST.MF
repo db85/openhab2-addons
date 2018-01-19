@@ -4,7 +4,10 @@ Bundle-ClassPath: .,
  lib/retrofit-2.3.0.jar,
  lib/okhttp-3.9.1.jar,
  lib/okio-1.13.0.jar,
- lib/converter-gson-2.3.0.jar
+ lib/converter-gson-2.3.0.jar,
+ lib/rxjava-2.1.8.jar,
+ lib/adapter-rxjava2-2.3.0.jar,
+ lib/reactive-streams-1.0.2.jar
 Bundle-ManifestVersion: 2
 Bundle-Name: ParrotFlower Binding
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -15,19 +18,21 @@ Export-Package:
  org.openhab.binding.parrotflower,
  org.openhab.binding.parrotflower.handler
 Import-Package: 
- org.openhab.binding.parrotflower,
- org.openhab.binding.parrotflower.handler,
+ org.apache.commons.lang;version="2.6.0",
  org.eclipse.jdt.annotation;resolution:=optional,
  org.eclipse.smarthome.config.core,
+ org.eclipse.smarthome.config.discovery,
  org.eclipse.smarthome.core.library.types,
  org.eclipse.smarthome.core.thing,
  org.eclipse.smarthome.core.thing.binding,
  org.eclipse.smarthome.core.thing.binding.builder,
  org.eclipse.smarthome.core.thing.type,
  org.eclipse.smarthome.core.types,
- org.slf4j,
+ org.openhab.binding.parrotflower,
+ org.openhab.binding.parrotflower.handler,
  org.osgi.framework,
  org.osgi.service.component.annotations;resolution:=optional,
- org.osgi.service.http;version="1.2.1"
+ org.osgi.service.http;version="1.2.1",
+ org.slf4j
 Service-Component: OSGI-INF/*.xml
 Require-Bundle: com.google.gson
