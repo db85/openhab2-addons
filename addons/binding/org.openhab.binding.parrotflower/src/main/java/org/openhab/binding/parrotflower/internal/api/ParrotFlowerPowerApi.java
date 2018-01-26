@@ -12,4 +12,10 @@ public interface ParrotFlowerPowerApi {
 
     @GET("user/v4/profile")
     Single<ProfileRepsonse> loadProfile();
+
+    @GET("/garden/v1/status")
+    Single<GardenLocationStatusResponse> loadGardenLocationStatus();
+
+    @GET("/garden/v2/configuration")
+    Single<GardenConfigurationResponse> loadGardenConfiguration();
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="parrotflower" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+	<thing-type id="sensordevice">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="parrotflowerapi" />
+		</supported-bridge-type-refs>
+
+		<label>Parrot Flower Sensor Device</label>
+		<description>A connected garden location.</description>
+
+		<channels>
+			<channel id="temptt" typeId="temptt" />
+		</channels>
+
+		<config-description>
+			<parameter name="identifier" type="text" required="true">
+				<label>identifier </label>
+				<description>parrot flower sensor identifier</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<channel-type id="temptt">
+		<item-type>String</item-type>
+		<label>last_sample_upload</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+
+</thing:thing-descriptions>

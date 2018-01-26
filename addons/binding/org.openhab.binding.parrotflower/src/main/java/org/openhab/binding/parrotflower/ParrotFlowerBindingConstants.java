@@ -31,6 +31,7 @@ public class ParrotFlowerBindingConstants {
 
     // List of all Thing Type UIDs
     public static final ThingTypeUID THING_TYPE_USER_PROFILE = new ThingTypeUID(BINDING_ID, "userprofile");
+    public static final ThingTypeUID THING_TYPE_SENSOR_DEVICE = new ThingTypeUID(BINDING_ID, "sensordevice");
 
     // List of all Channel ids
     public static final String CHANNEL_1 = "channel1";

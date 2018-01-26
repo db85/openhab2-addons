@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="parrotflower" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+	<thing-type id="userprofile">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="parrotflowerapi" />
+		</supported-bridge-type-refs>
+
+		<label>Parrot User Profile</label>
+		<description>A connected user profile.</description>
+
+		<channels>
+			<channel id="language_iso639" typeId="language_iso639" />
+			<channel id="notification_curfew_end" typeId="notification_curfew_end" />
+			<channel id="notification_curfew_start" typeId="notification_curfew_start" />
+			<channel id="pictures_public" typeId="pictures_public" />
+			<channel id="use_fahrenheit" typeId="use_fahrenheit" />
+			<channel id="useFeetInches" typeId="useFeetInches" />
+			<channel id="use_ftc" typeId="use_ftc" />
+			<channel id="use_liter" typeId="use_liter" />
+			<channel id="use_lux" typeId="use_lux" />
+			<channel id="use_mol" typeId="use_mol" />
+			<channel id="utc_timezone" typeId="utc_timezone" />
+		</channels>
+
+		<config-description>
+			<parameter name="email" type="text" required="true">
+				<label>email </label>
+				<description>Userprofile emil</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<channel-type id="language_iso639">
+		<item-type>String</item-type>
+		<label>language_iso639</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="notification_curfew_end">
+		<item-type>String</item-type>
+		<label>notification_curfew_end</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="notification_curfew_start">
+		<item-type>String</item-type>
+		<label>notification_curfew_start</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="pictures_public">
+		<item-type>String</item-type>
+		<label>pictures_public</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="use_fahrenheit">
+		<item-type>String</item-type>
+		<label>use_fahrenheit</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="useFeetInches">
+		<item-type>String</item-type>
+		<label>useFeetInches</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="use_ftc">
+		<item-type>String</item-type>
+		<label>use_ftc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="use_liter">
+		<item-type>String</item-type>
+		<label>use_liter</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="use_lux">
+		<item-type>String</item-type>
+		<label>use_lux</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="use_mol">
+		<item-type>String</item-type>
+		<label>use_mol</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="utc_timezone">
+		<item-type>String</item-type>
+		<label>utc_timezone</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+</thing:thing-descriptions>

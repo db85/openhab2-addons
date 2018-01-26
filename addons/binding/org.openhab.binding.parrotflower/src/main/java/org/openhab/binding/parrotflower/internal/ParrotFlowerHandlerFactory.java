@@ -28,6 +28,7 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
+import org.openhab.binding.parrotflower.handler.SensorDeviceHandler;
 import org.openhab.binding.parrotflower.handler.UserProfileHandler;
 import org.osgi.service.component.annotations.Component;
 
@@ -43,7 +44,7 @@ import org.osgi.service.component.annotations.Component;
 public class ParrotFlowerHandlerFactory extends BaseThingHandlerFactory {
 
     private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Stream
-            .of(THING_TYPE_BRIDGE, THING_TYPE_USER_PROFILE).collect(Collectors.toSet());
+            .of(THING_TYPE_BRIDGE, THING_TYPE_USER_PROFILE, THING_TYPE_SENSOR_DEVICE).collect(Collectors.toSet());
 
     private List<ParrotFlowerBridgeHandler> bridgeList = new ArrayList<>();
 
@@ -61,6 +62,8 @@ public class ParrotFlowerHandlerFactory extends BaseThingHandlerFactory {
             return bridge;
         } else if (thingTypeUID.equals(THING_TYPE_USER_PROFILE)) {
             return new UserProfileHandler(thing);
+        } else if (thingTypeUID.equals(THING_TYPE_SENSOR_DEVICE)) {
+            return new SensorDeviceHandler(thing);
         }
         return null;
     }
