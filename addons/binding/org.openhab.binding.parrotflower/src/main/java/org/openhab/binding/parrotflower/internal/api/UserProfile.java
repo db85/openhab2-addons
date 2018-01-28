@@ -16,7 +16,7 @@ public class UserProfile {
     private String picturesPublic;
     @SerializedName("use_fahrenheit")
     private String useFahrenheit;
-    @SerializedName("useFeetInches")
+    @SerializedName("use_feet_inches")
     private String useFeetInches;
     @SerializedName("use_ftc")
     private String useFtc;

@@ -12,7 +12,32 @@
 		<description>A connected garden location.</description>
 
 		<channels>
-			<channel id="temptt" typeId="temptt" />
+			<channel id="avatar_url" typeId="sensorinfo" />
+			<channel id="in_pot" typeId=sensorinfo />
+			<channel id="is_indoor" typeId="sensorinfo" />
+			<channel id="latitude" typeId="sensorinfo" />
+			<channel id="longitude" typeId="sensorinfo" />
+			<channel id="plant_nickname" typeId="sensorinfo" />
+			<channel id="current_history_index" typeId="sensorinfo" />
+			<channel id="firmware_update" typeId="sensorinfo" />
+			<channel id="sensor_identifier" typeId="sensorinfo" />
+			<channel id="sensor_type" typeId="sensorinfo" />
+			<channel id="growth_day" typeId="sensorinfo" />
+			<channel id="last_processed_upload_datetime_utc" typeId="sensorinfo" />
+			<channel id="last_sample_upload" typeId="sensorinfo" />
+			<channel id="last_sample_utc" typeId="sensorinfo" />
+			<channel id="processing_uploads" typeId="sensorinfo" />
+			<channel id="total_sample_count" typeId="sensorinfo" />
+			<channel id="battery_current_value" typeId="sensorinfo" />
+			<channel id="battery_max_threshold" typeId="sensorinfo" />
+			<channel id="battery_min_threshold" typeId="sensorinfo" />
+			<channel id="watering_instruction_key" typeId="sensorinfo" />
+			<channel id="watering_status_key" typeId="sensorinfo" />
+			<channel id="watering_next_analysis_datetime_utc" typeId="sensorinfo" />
+			<channel id="watering_predicted_action_datetime_utc" typeId="sensorinfo" />
+			<channel id="watering_current_value" typeId="sensorinfo" />
+			<channel id="watering_max_threshold" typeId="sensorinfo" />
+			<channel id="watering_min_threshold" typeId="sensorinfo" />
 		</channels>
 
 		<config-description>
@@ -23,9 +48,9 @@
 		</config-description>
 	</thing-type>
 
-	<channel-type id="temptt">
+	<channel-type id="sensorinfo">
 		<item-type>String</item-type>
-		<label>last_sample_upload</label>
+		<label>"sensor Info"</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>

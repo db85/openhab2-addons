@@ -7,12 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
 import org.eclipse.smarthome.config.discovery.DiscoveryService;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.ThingUID;
+import org.openhab.binding.parrotflower.handler.SensorDeviceHandler;
+import org.openhab.binding.parrotflower.handler.UserProfileHandler;
 import org.openhab.binding.parrotflower.internal.ParrotFlowerBridgeHandler;
 import org.openhab.binding.parrotflower.internal.ParrotFlowerHandlerFactory;
 import org.openhab.binding.parrotflower.internal.api.GardenConfiguration;
@@ -106,28 +109,43 @@ public class ParrotFlowerDiscoveryService extends AbstractDiscoveryService {
         }
 
         gardenConfiguration.forEach(config -> {
-            ThingUID sensorThing = new ThingUID(THING_TYPE_SENSOR_DEVICE,
-                    config.getLocationIdentifier().replaceAll("[^a-zA-Z0-9_]", ""));
+            String identifier = config.getLocationIdentifier();
+            Stream<SensorDeviceHandler> devices = handlerFactory.getSensorDeviceHandlerList().stream()
+                    .filter(profileHandler -> identifier
+                            .equals(profileHandler.getThing().getConfiguration().getProperties().get("identifier")));
+            if (devices.count() > 0) {
+                devices.forEach(deviceHandler -> deviceHandler.updateChannels(config,
+                        gardenResponseZipModel.getGardenLocationStatusResponse()));
+            } else {
+                ThingUID sensorThing = new ThingUID(THING_TYPE_SENSOR_DEVICE,
+                        identifier.replaceAll("[^a-zA-Z0-9_]", ""));
+                Map<String, Object> properties = new HashMap<>();
+                properties.put("identifier", identifier);
 
-            Map<String, Object> properties = new HashMap<>();
-            properties.put("identifier", config.getLocationIdentifier());
-
-            thingDiscovered(DiscoveryResultBuilder.create(sensorThing).withBridge(bridge.getThing().getBridgeUID())
-                    .withLabel(config.getPlantNickname()).withProperties(properties).build());
+                thingDiscovered(DiscoveryResultBuilder.create(sensorThing).withBridge(bridge.getThing().getBridgeUID())
+                        .withLabel(config.getPlantNickname()).withProperties(properties).build());
+            }
         });
     }
 
     private void handleUserProfileResponse(ParrotFlowerBridgeHandler bridge, ProfileRepsonse profileResponse) {
         UserProfile userProfile = profileResponse.getUserProfile();
 
-        ThingUID userProfileThing = new ThingUID(THING_TYPE_USER_PROFILE,
-                userProfile.getEmail().toLowerCase().replaceAll("[^a-zA-Z0-9_]", ""));
+        String mail = userProfile.getEmail().toLowerCase();
 
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("email", userProfile.getEmail().toLowerCase());
+        Stream<UserProfileHandler> profiles = handlerFactory.getUserProfileHandlerList().stream()
+                .filter(profileHandler -> mail
+                        .equals(profileHandler.getThing().getConfiguration().getProperties().get("email")));
+        if (profiles.count() > 0) {
+            profiles.forEach(profileHandler -> profileHandler.updateChannels(userProfile));
+        } else {
+            ThingUID userProfileThing = new ThingUID(THING_TYPE_USER_PROFILE, mail.replaceAll("[^a-zA-Z0-9_]", ""));
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("email", mail);
 
-        thingDiscovered(DiscoveryResultBuilder.create(userProfileThing).withBridge(bridge.getThing().getBridgeUID())
-                .withLabel("Parrot User Profile").withProperties(properties).build());
+            thingDiscovered(DiscoveryResultBuilder.create(userProfileThing).withBridge(bridge.getThing().getBridgeUID())
+                    .withLabel("Parrot User Profile").withProperties(properties).build());
+        }
     }
 
     private Completable loadData(ParrotFlowerBridgeHandler bridge) {
@@ -155,7 +173,7 @@ public class ParrotFlowerDiscoveryService extends AbstractDiscoveryService {
         }
         scanDisposeable = new CompositeDisposable();
 
-        handlerFactory.getBridgeList().forEach((bridge) -> {
+        handlerFactory.getBridgeHandlerList().forEach((bridge) -> {
             scanDisposeable.add(loadData(bridge).subscribe(() -> {
                 logger.debug("scan load data success");
             }, (throwable) -> {

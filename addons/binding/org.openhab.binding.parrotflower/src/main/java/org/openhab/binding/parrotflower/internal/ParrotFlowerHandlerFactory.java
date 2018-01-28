@@ -46,37 +46,65 @@ public class ParrotFlowerHandlerFactory extends BaseThingHandlerFactory {
     private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Stream
             .of(THING_TYPE_BRIDGE, THING_TYPE_USER_PROFILE, THING_TYPE_SENSOR_DEVICE).collect(Collectors.toSet());
 
-    private List<ParrotFlowerBridgeHandler> bridgeList = new ArrayList<>();
-
-    @Override
-    public boolean supportsThingType(ThingTypeUID thingTypeUID) {
-        return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
-    }
+    private List<ParrotFlowerBridgeHandler> bridgeHandlerList = new ArrayList<>();
+    private List<UserProfileHandler> userProfileHandlerList = new ArrayList<>();
+    private List<SensorDeviceHandler> sensorDeviceHandlerList = new ArrayList<>();
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
         if (thingTypeUID.equals(THING_TYPE_BRIDGE)) {
-            ParrotFlowerBridgeHandler bridge = new ParrotFlowerBridgeHandler((Bridge) thing);
-            bridgeList.add(bridge);
-            return bridge;
+            ParrotFlowerBridgeHandler bridgeHandler = new ParrotFlowerBridgeHandler((Bridge) thing);
+            bridgeHandlerList.add(bridgeHandler);
+            return bridgeHandler;
         } else if (thingTypeUID.equals(THING_TYPE_USER_PROFILE)) {
-            return new UserProfileHandler(thing);
+            UserProfileHandler userProfileHandlern = new UserProfileHandler(thing);
+            userProfileHandlerList.add(userProfileHandlern);
+            return userProfileHandlern;
         } else if (thingTypeUID.equals(THING_TYPE_SENSOR_DEVICE)) {
-            return new SensorDeviceHandler(thing);
+            SensorDeviceHandler sensorDeviceHandler = new SensorDeviceHandler(thing);
+            sensorDeviceHandlerList.add(sensorDeviceHandler);
+            return sensorDeviceHandler;
         }
         return null;
     }
 
-    public List<ParrotFlowerBridgeHandler> getBridgeList() {
-        return bridgeList;
+    public List<ParrotFlowerBridgeHandler> getBridgeHandlerList() {
+        return bridgeHandlerList;
+    }
+
+    public List<SensorDeviceHandler> getSensorDeviceHandlerList() {
+        return sensorDeviceHandlerList;
+    }
+
+    public List<UserProfileHandler> getUserProfileHandlerList() {
+        return userProfileHandlerList;
     }
 
     @Override
     protected void removeHandler(ThingHandler thingHandler) {
-        bridgeList.removeAll(bridgeList.stream()
-                .filter(handler -> handler.getThing().getUID().equals(thingHandler.getThing().getUID()))
-                .collect(Collectors.toList()));
+        if (thingHandler.getThing().getThingTypeUID().equals(THING_TYPE_BRIDGE)) {
+            bridgeHandlerList.removeAll(bridgeHandlerList.stream()
+                    .filter(handler -> handler.getThing().getUID().equals(thingHandler.getThing().getUID()))
+                    .collect(Collectors.toList()));
+
+        } else if (thingHandler.getThing().getThingTypeUID().equals(THING_TYPE_USER_PROFILE)) {
+            userProfileHandlerList.removeAll(userProfileHandlerList.stream()
+                    .filter(handler -> handler.getThing().getUID().equals(thingHandler.getThing().getUID()))
+                    .collect(Collectors.toList()));
+
+        } else if (thingHandler.getThing().getThingTypeUID().equals(THING_TYPE_SENSOR_DEVICE)) {
+            sensorDeviceHandlerList.removeAll(sensorDeviceHandlerList.stream()
+                    .filter(handler -> handler.getThing().getUID().equals(thingHandler.getThing().getUID()))
+                    .collect(Collectors.toList()));
+
+        }
+
         super.removeHandler(thingHandler);
+    }
+
+    @Override
+    public boolean supportsThingType(ThingTypeUID thingTypeUID) {
+        return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
     }
 }

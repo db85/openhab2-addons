@@ -3,12 +3,12 @@ package org.openhab.binding.parrotflower.internal.api;
 import com.google.gson.annotations.SerializedName;
 
 public class Sensor {
-    @SerializedName("currentHistoryIndex")
+    @SerializedName("current_history_index")
     private String currentHistoryIndex;
     @SerializedName("firmware_update")
     private Firmware firmwareUpdate;
-    @SerializedName("sensorIdentifier")
-    private String sensor_identifier;
+    @SerializedName("sensor_identifier")
+    private String sensorIdentifier;
     @SerializedName("sensor_type")
     private String sensorType;
 
@@ -20,8 +20,8 @@ public class Sensor {
         return firmwareUpdate;
     }
 
-    public String getSensor_identifier() {
-        return sensor_identifier;
+    public String getSensorIdentifier() {
+        return sensorIdentifier;
     }
 
     public String getSensorType() {
@@ -36,8 +36,8 @@ public class Sensor {
         this.firmwareUpdate = firmwareUpdate;
     }
 
-    public void setSensor_identifier(String sensor_identifier) {
-        this.sensor_identifier = sensor_identifier;
+    public void setSensorIdentifier(String sensorIdentifier) {
+        this.sensorIdentifier = sensorIdentifier;
     }
 
     public void setSensorType(String sensorType) {
