@@ -28,6 +28,7 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
+import org.openhab.binding.parrotflower.handler.ParrotFlowerBridgeHandler;
 import org.openhab.binding.parrotflower.handler.SensorDeviceHandler;
 import org.openhab.binding.parrotflower.handler.UserProfileHandler;
 import org.osgi.service.component.annotations.Component;

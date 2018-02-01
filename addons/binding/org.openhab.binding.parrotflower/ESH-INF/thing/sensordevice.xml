@@ -12,32 +12,59 @@
 		<description>A connected garden location.</description>
 
 		<channels>
-			<channel id="avatar_url" typeId="sensorinfo" />
-			<channel id="in_pot" typeId=sensorinfo />
-			<channel id="is_indoor" typeId="sensorinfo" />
-			<channel id="latitude" typeId="sensorinfo" />
-			<channel id="longitude" typeId="sensorinfo" />
-			<channel id="plant_nickname" typeId="sensorinfo" />
-			<channel id="current_history_index" typeId="sensorinfo" />
-			<channel id="firmware_update" typeId="sensorinfo" />
-			<channel id="sensor_identifier" typeId="sensorinfo" />
-			<channel id="sensor_type" typeId="sensorinfo" />
-			<channel id="growth_day" typeId="sensorinfo" />
-			<channel id="last_processed_upload_datetime_utc" typeId="sensorinfo" />
-			<channel id="last_sample_upload" typeId="sensorinfo" />
-			<channel id="last_sample_utc" typeId="sensorinfo" />
-			<channel id="processing_uploads" typeId="sensorinfo" />
-			<channel id="total_sample_count" typeId="sensorinfo" />
-			<channel id="battery_current_value" typeId="sensorinfo" />
-			<channel id="battery_max_threshold" typeId="sensorinfo" />
-			<channel id="battery_min_threshold" typeId="sensorinfo" />
-			<channel id="watering_instruction_key" typeId="sensorinfo" />
-			<channel id="watering_status_key" typeId="sensorinfo" />
-			<channel id="watering_next_analysis_datetime_utc" typeId="sensorinfo" />
-			<channel id="watering_predicted_action_datetime_utc" typeId="sensorinfo" />
-			<channel id="watering_current_value" typeId="sensorinfo" />
-			<channel id="watering_max_threshold" typeId="sensorinfo" />
-			<channel id="watering_min_threshold" typeId="sensorinfo" />
+			<channel id="avatar_url" typeId="avatar_url" />
+			<channel id="in_pot" typeId="in_pot" />
+			<channel id="is_indoor" typeId="is_indoor" />
+			<channel id="latitude" typeId="latitude" />
+			<channel id="longitude" typeId="longitude" />
+			<channel id="plant_nickname" typeId="plant_nickname" />
+			<channel id="current_history_index" typeId="current_history_index" />
+			<channel id="firmware_version" typeId="firmware_version" />
+			<channel id="firmware_upgrade_available" typeId="firmware_upgrade_available" />
+			<channel id="sensor_identifier" typeId="sensor_identifier" />
+			<channel id="sensor_type" typeId="sensor_type" />
+			<channel id="growth_day" typeId="growth_day" />
+			<channel id="last_processed_upload_datetime_utc" typeId="last_processed_upload_datetime_utc" />
+			<channel id="last_sample_upload" typeId="last_sample_upload" />
+			<channel id="last_sample_utc" typeId="last_sample_utc" />
+			<channel id="processing_uploads" typeId="processing_uploads" />
+			<channel id="total_sample_count" typeId="total_sample_count" />
+
+			<channel id="battery_current_value" typeId="battery_current_value" />
+			<channel id="battery_max_threshold" typeId="battery_max_threshold" />
+			<channel id="battery_min_threshold" typeId="battery_min_threshold" />
+
+			<channel id="watering_instruction_key" typeId="watering_instruction_key" />
+			<channel id="watering_status_key" typeId="watering_status_key" />
+			<channel id="watering_next_analysis_datetime_utc" typeId="watering_next_analysis_datetime_utc" />
+			<channel id="watering_predicted_action_datetime_utc" typeId="watering_predicted_action_datetime_utc" />
+			<channel id="watering_current_value" typeId="watering_current_value" />
+			<channel id="watering_max_threshold" typeId="watering_max_threshold" />
+			<channel id="watering_min_threshold" typeId="watering_min_threshold" />
+
+			<channel id="light_instruction_key" typeId="light_instruction_key" />
+			<channel id="light_status_key" typeId="light_status_key" />
+			<channel id="light_analysis_datetime_utc" typeId="light_analysis_datetime_utc" />
+			<channel id="light_predicted_action_datetime_utc" typeId="light_predicted_action_datetime_utc" />
+			<channel id="light_current_value" typeId="light_current_value" />
+			<channel id="light_max_threshold" typeId="light_max_threshold" />
+			<channel id="light_min_threshold" typeId="light_min_threshold" />
+
+			<channel id="air_temperature_instruction_key" typeId="air_temperature_instruction_key" />
+			<channel id="air_temperature_status_key" typeId="air_temperature_status_key" />
+			<channel id="air_temperature_analysis_datetime_utc" typeId="air_temperature_analysis_datetime_utc" />
+			<channel id="air_temperature_predicted_action_datetime_utc" typeId="air_temperature_predicted_action_datetime_utc" />
+			<channel id="air_temperature_current_value" typeId="air_temperature_current_value" />
+			<channel id="air_temperature_max_threshold" typeId="air_temperature_max_threshold" />
+			<channel id="air_temperature_min_threshold" typeId="air_temperature_min_threshold" />
+
+			<channel id="fertilizer_instruction_key" typeId="fertilizer_instruction_key" />
+			<channel id="fertilizer_status_key" typeId="fertilizer_status_key" />
+			<channel id="fertilizer_analysis_datetime_utc" typeId="fertilizer_analysis_datetime_utc" />
+			<channel id="fertilizer_predicted_action_datetime_utc" typeId="fertilizer_predicted_action_datetime_utc" />
+			<channel id="fertilizer_current_value" typeId="fertilizer_current_value" />
+			<channel id="fertilizer_max_threshold" typeId="fertilizer_max_threshold" />
+			<channel id="fertilizer_min_threshold" typeId="fertilizer_min_threshold" />
 		</channels>
 
 		<config-description>
@@ -48,9 +75,291 @@
 		</config-description>
 	</thing-type>
 
-	<channel-type id="sensorinfo">
+	<channel-type id="avatar_url">
 		<item-type>String</item-type>
-		<label>"sensor Info"</label>
+		<label>Avatar Url</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="in_pot">
+		<item-type>String</item-type>
+		<label>In Pot</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="is_indoor">
+		<item-type>String</item-type>
+		<label>Is Indoor</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="latitude">
+		<item-type>String</item-type>
+		<label>Latitude</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="longitude">
+		<item-type>String</item-type>
+		<label>Longitude</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="plant_nickname">
+		<item-type>String</item-type>
+		<label>Plant Nickname</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="current_history_index">
+		<item-type>String</item-type>
+		<label>Current History Index</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="firmware_version">
+		<item-type>String</item-type>
+		<label>Firmware Version</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="firmware_upgrade_available">
+		<item-type>String</item-type>
+		<label>Firmware Upgrade Available</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="sensor_identifier">
+		<item-type>String</item-type>
+		<label>Sensor Identifier</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="sensor_type">
+		<item-type>String</item-type>
+		<label>Sensor Type</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="growth_day">
+		<item-type>String</item-type>
+		<label>Growth Day</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="last_processed_upload_datetime_utc">
+		<item-type>String</item-type>
+		<label>Last Processed Upload Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="last_sample_upload">
+		<item-type>String</item-type>
+		<label>Last Sample Upload</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="last_sample_utc">
+		<item-type>String</item-type>
+		<label>Last Sample Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="processing_uploads">
+		<item-type>String</item-type>
+		<label>Processing Uploads</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="total_sample_count">
+		<item-type>String</item-type>
+		<label>Total Sample Count</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="battery_current_value">
+		<item-type>String</item-type>
+		<label>Battery Current Value</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="battery_max_threshold">
+		<item-type>String</item-type>
+		<label>Battery Max Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="battery_min_threshold">
+		<item-type>String</item-type>
+		<label>Battery Min Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="watering_instruction_key">
+		<item-type>String</item-type>
+		<label>Watering Instruction Key</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="watering_status_key">
+		<item-type>String</item-type>
+		<label>Watering Status Key</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="watering_next_analysis_datetime_utc">
+		<item-type>String</item-type>
+		<label>Watering Next Analysis Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="watering_predicted_action_datetime_utc">
+		<item-type>String</item-type>
+		<label>Watering Predicted Action Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="watering_current_value">
+		<item-type>String</item-type>
+		<label>Watering Current Value</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="watering_max_threshold">
+		<item-type>String</item-type>
+		<label>Watering Max Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="watering_min_threshold">
+		<item-type>String</item-type>
+		<label>Watering Min Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="light_instruction_key">
+		<item-type>String</item-type>
+		<label>Light Instruction Key</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="light_status_key">
+		<item-type>String</item-type>
+		<label>Light Status Key</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="light_next_analysis_datetime_utc">
+		<item-type>String</item-type>
+		<label>Light Next Analysis Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="light_predicted_action_datetime_utc">
+		<item-type>String</item-type>
+		<label>Light Predicted Action Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="light_current_value">
+		<item-type>String</item-type>
+		<label>Light Current Value</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="light_max_threshold">
+		<item-type>String</item-type>
+		<label>Light Max Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="light_min_threshold">
+		<item-type>String</item-type>
+		<label>Light Min Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="air_temperature_instruction_key">
+		<item-type>String</item-type>
+		<label>Air Temperature Instruction Key</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="air_temperature_status_key">
+		<item-type>String</item-type>
+		<label>Air Temperature Status Key</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="air_temperature_next_analysis_datetime_utc">
+		<item-type>String</item-type>
+		<label>Air Temperature Next Analysis Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="air_temperature_predicted_action_datetime_utc">
+		<item-type>String</item-type>
+		<label>Air Temperature Predicted Action Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="air_temperature_current_value">
+		<item-type>String</item-type>
+		<label>Air Temperature Current Value</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="air_temperature_max_threshold">
+		<item-type>String</item-type>
+		<label>Air Temperature Max Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="air_temperature_min_threshold">
+		<item-type>String</item-type>
+		<label>Air Temperature Min Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="fertilizer_instruction_key">
+		<item-type>String</item-type>
+		<label>Fertilizer Instruction Key</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="fertilizer_status_key">
+		<item-type>String</item-type>
+		<label>Fertilizer Status Key</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="fertilizer_next_analysis_datetime_utc">
+		<item-type>String</item-type>
+		<label>Fertilizer Next Analysis Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="fertilizer_predicted_action_datetime_utc">
+		<item-type>String</item-type>
+		<label>Fertilizer Predicted Action Datetime Utc</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="fertilizer_current_value">
+		<item-type>String</item-type>
+		<label>Fertilizer Current Value</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="fertilizer_max_threshold">
+		<item-type>String</item-type>
+		<label>Fertilizer Max Threshold</label>
+		<description></description>
+		<state readOnly="true" />
+	</channel-type>
+	<channel-type id="fertilizer_min_threshold">
+		<item-type>String</item-type>
+		<label>Fertilizer Min Threshold</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>

@@ -1,4 +1,4 @@
-package org.openhab.binding.parrotflower.internal;
+package org.openhab.binding.parrotflower.handler;
 
 import static org.openhab.binding.parrotflower.ParrotFlowerBindingConstants.API_URL;
 
@@ -10,6 +10,7 @@ import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.binding.BaseBridgeHandler;
 import org.eclipse.smarthome.core.types.Command;
+import org.openhab.binding.parrotflower.internal.ParrotFlowerBridgeConfiguration;
 import org.openhab.binding.parrotflower.internal.api.ParrotFlowerPowerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

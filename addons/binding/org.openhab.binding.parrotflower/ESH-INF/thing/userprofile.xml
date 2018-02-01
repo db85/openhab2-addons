@@ -17,7 +17,7 @@
 			<channel id="notification_curfew_start" typeId="notification_curfew_start" />
 			<channel id="pictures_public" typeId="pictures_public" />
 			<channel id="use_fahrenheit" typeId="use_fahrenheit" />
-			<channel id="useFeetInches" typeId="useFeetInches" />
+			<channel id="useFeetInches" typeId="use_feet_inches" />
 			<channel id="use_ftc" typeId="use_ftc" />
 			<channel id="use_liter" typeId="use_liter" />
 			<channel id="use_lux" typeId="use_lux" />

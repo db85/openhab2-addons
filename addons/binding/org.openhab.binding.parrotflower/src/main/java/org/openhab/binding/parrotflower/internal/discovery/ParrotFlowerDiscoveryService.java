@@ -6,20 +6,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
 import org.eclipse.smarthome.config.discovery.DiscoveryService;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.ThingUID;
+import org.openhab.binding.parrotflower.handler.ParrotFlowerBridgeHandler;
 import org.openhab.binding.parrotflower.handler.SensorDeviceHandler;
 import org.openhab.binding.parrotflower.handler.UserProfileHandler;
-import org.openhab.binding.parrotflower.internal.ParrotFlowerBridgeHandler;
 import org.openhab.binding.parrotflower.internal.ParrotFlowerHandlerFactory;
 import org.openhab.binding.parrotflower.internal.api.GardenConfiguration;
 import org.openhab.binding.parrotflower.internal.api.GardenConfigurationResponse;
+import org.openhab.binding.parrotflower.internal.api.GardenLocation;
 import org.openhab.binding.parrotflower.internal.api.GardenLocationStatusResponse;
 import org.openhab.binding.parrotflower.internal.api.ParrotFlowerPowerApi;
 import org.openhab.binding.parrotflower.internal.api.ProfileRepsonse;
@@ -110,12 +112,16 @@ public class ParrotFlowerDiscoveryService extends AbstractDiscoveryService {
 
         gardenConfiguration.forEach(config -> {
             String identifier = config.getLocationIdentifier();
-            Stream<SensorDeviceHandler> devices = handlerFactory.getSensorDeviceHandlerList().stream()
+            List<SensorDeviceHandler> devices = handlerFactory.getSensorDeviceHandlerList().stream()
                     .filter(profileHandler -> identifier
-                            .equals(profileHandler.getThing().getConfiguration().getProperties().get("identifier")));
-            if (devices.count() > 0) {
+                            .equals(profileHandler.getThing().getConfiguration().getProperties().get("identifier")))
+                    .collect(Collectors.toList());
+            if (devices.size() > 0) {
+                Optional<GardenLocation> gardenLocation = gardenResponseZipModel.getGardenLocationStatusResponse()
+                        .getLocations().stream().filter(location -> location.getLocationIdentifier().equals(identifier))
+                        .findFirst();
                 devices.forEach(deviceHandler -> deviceHandler.updateChannels(config,
-                        gardenResponseZipModel.getGardenLocationStatusResponse()));
+                        gardenLocation.isPresent() ? gardenLocation.get() : null));
             } else {
                 ThingUID sensorThing = new ThingUID(THING_TYPE_SENSOR_DEVICE,
                         identifier.replaceAll("[^a-zA-Z0-9_]", ""));
@@ -133,10 +139,11 @@ public class ParrotFlowerDiscoveryService extends AbstractDiscoveryService {
 
         String mail = userProfile.getEmail().toLowerCase();
 
-        Stream<UserProfileHandler> profiles = handlerFactory.getUserProfileHandlerList().stream()
+        List<UserProfileHandler> profiles = handlerFactory.getUserProfileHandlerList().stream()
                 .filter(profileHandler -> mail
-                        .equals(profileHandler.getThing().getConfiguration().getProperties().get("email")));
-        if (profiles.count() > 0) {
+                        .equals(profileHandler.getThing().getConfiguration().getProperties().get("email")))
+                .collect(Collectors.toList());
+        if (profiles.size() > 0) {
             profiles.forEach(profileHandler -> profileHandler.updateChannels(userProfile));
         } else {
             ThingUID userProfileThing = new ThingUID(THING_TYPE_USER_PROFILE, mail.replaceAll("[^a-zA-Z0-9_]", ""));
