@@ -28,10 +28,14 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
+import org.eclipse.smarthome.core.thing.type.ChannelTypeRegistry;
 import org.openhab.binding.parrotflower.handler.ParrotFlowerBridgeHandler;
 import org.openhab.binding.parrotflower.handler.SensorDeviceHandler;
 import org.openhab.binding.parrotflower.handler.UserProfileHandler;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * The {@link ParrotFlowerHandlerFactory} is responsible for creating things and thing
@@ -39,6 +43,7 @@ import org.osgi.service.component.annotations.Component;
  *
  * @author Daniel Bauer - Initial contribution
  */
+
 @Component(service = { ThingHandlerFactory.class,
         ParrotFlowerHandlerFactory.class }, immediate = true, configurationPid = "binding.parrotflower")
 @NonNullByDefault
@@ -48,8 +53,11 @@ public class ParrotFlowerHandlerFactory extends BaseThingHandlerFactory {
             .of(THING_TYPE_BRIDGE, THING_TYPE_USER_PROFILE, THING_TYPE_SENSOR_DEVICE).collect(Collectors.toSet());
 
     private List<ParrotFlowerBridgeHandler> bridgeHandlerList = new ArrayList<>();
-    private List<UserProfileHandler> userProfileHandlerList = new ArrayList<>();
+    @Nullable
+    private ChannelTypeRegistry channelTypeRegistry;
     private List<SensorDeviceHandler> sensorDeviceHandlerList = new ArrayList<>();
+
+    private List<UserProfileHandler> userProfileHandlerList = new ArrayList<>();
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
@@ -62,8 +70,8 @@ public class ParrotFlowerHandlerFactory extends BaseThingHandlerFactory {
             UserProfileHandler userProfileHandlern = new UserProfileHandler(thing);
             userProfileHandlerList.add(userProfileHandlern);
             return userProfileHandlern;
-        } else if (thingTypeUID.equals(THING_TYPE_SENSOR_DEVICE)) {
-            SensorDeviceHandler sensorDeviceHandler = new SensorDeviceHandler(thing);
+        } else if (thingTypeUID.equals(THING_TYPE_SENSOR_DEVICE) && channelTypeRegistry != null) {
+            SensorDeviceHandler sensorDeviceHandler = new SensorDeviceHandler(channelTypeRegistry, thing);
             sensorDeviceHandlerList.add(sensorDeviceHandler);
             return sensorDeviceHandler;
         }
@@ -104,8 +112,18 @@ public class ParrotFlowerHandlerFactory extends BaseThingHandlerFactory {
         super.removeHandler(thingHandler);
     }
 
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL, policy = ReferencePolicy.DYNAMIC)
+    protected void setChannelTypeRegistry(ChannelTypeRegistry channelTypeRegistry) {
+        this.channelTypeRegistry = channelTypeRegistry;
+    }
+
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
         return SUPPORTED_THING_TYPES_UIDS.contains(thingTypeUID);
     }
+
+    protected void unsetChannelTypeRegistry(ChannelTypeRegistry channelTypeRegistry) {
+        this.channelTypeRegistry = null;
+    }
+
 }

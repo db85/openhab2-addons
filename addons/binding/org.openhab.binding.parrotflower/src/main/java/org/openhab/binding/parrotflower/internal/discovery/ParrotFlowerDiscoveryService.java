@@ -54,12 +54,12 @@ public class ParrotFlowerDiscoveryService extends AbstractDiscoveryService {
             return gardenConfigurationResponse;
         }
 
-        public void setGardenConfigurationResponse(GardenConfigurationResponse gardenConfigurationResponse) {
-            this.gardenConfigurationResponse = gardenConfigurationResponse;
-        }
-
         public GardenLocationStatusResponse getGardenLocationStatusResponse() {
             return gardenLocationStatusResponse;
+        }
+
+        public void setGardenConfigurationResponse(GardenConfigurationResponse gardenConfigurationResponse) {
+            this.gardenConfigurationResponse = gardenConfigurationResponse;
         }
 
         public void setGardenLocationStatusResponse(GardenLocationStatusResponse gardenLocationStatusResponse) {
@@ -72,12 +72,12 @@ public class ParrotFlowerDiscoveryService extends AbstractDiscoveryService {
     private static final int DISCOVER_TIMEOUT_SECONDS = 10;
     private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.singleton(THING_TYPE_USER_PROFILE);
 
+    // private CompositeDisposable backgroundDisposeable;
     private ParrotFlowerHandlerFactory handlerFactory;
-    private final Logger logger = LoggerFactory.getLogger(ParrotFlowerDiscoveryService.class);
 
+    private final Logger logger = LoggerFactory.getLogger(ParrotFlowerDiscoveryService.class);
     // private CompositeDisposable jobDisposeable;
     private CompositeDisposable scanDisposeable;
-    // private CompositeDisposable backgroundDisposeable;
 
     public ParrotFlowerDiscoveryService() {
         super(SUPPORTED_THING_TYPES, DISCOVER_TIMEOUT_SECONDS, false);
@@ -173,6 +173,13 @@ public class ParrotFlowerDiscoveryService extends AbstractDiscoveryService {
         this.handlerFactory = handlerFactory;
     }
 
+    // @Override
+    // protected void stopBackgroundDiscovery() {
+    // if (backgroundDisposeable != null && !backgroundDisposeable.isDisposed()) {
+    // backgroundDisposeable.dispose();
+    // }
+    // }
+
     @Override
     protected void startScan() {
         if (scanDisposeable != null && !scanDisposeable.isDisposed()) {
@@ -188,13 +195,6 @@ public class ParrotFlowerDiscoveryService extends AbstractDiscoveryService {
             }));
         });
     }
-
-    // @Override
-    // protected void stopBackgroundDiscovery() {
-    // if (backgroundDisposeable != null && !backgroundDisposeable.isDisposed()) {
-    // backgroundDisposeable.dispose();
-    // }
-    // }
 
     public void unsetParrotFlowerHandlerFactory(ParrotFlowerHandlerFactory handlerFactory) {
         this.handlerFactory = null;

@@ -94,13 +94,13 @@
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="latitude">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Latitude</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="longitude">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Longitude</label>
 		<description></description>
 		<state readOnly="true" />
@@ -112,7 +112,7 @@
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="current_history_index">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Current History Index</label>
 		<description></description>
 		<state readOnly="true" />
@@ -172,25 +172,25 @@
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="total_sample_count">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Total Sample Count</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="battery_current_value">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Battery Current Value</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="battery_max_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Battery Max Threshold</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="battery_min_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Battery Min Threshold</label>
 		<description></description>
 		<state readOnly="true" />
@@ -220,19 +220,19 @@
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="watering_current_value">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Watering Current Value</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="watering_max_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Watering Max Threshold</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="watering_min_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Watering Min Threshold</label>
 		<description></description>
 		<state readOnly="true" />
@@ -262,19 +262,19 @@
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="light_current_value">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Light Current Value</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="light_max_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Light Max Threshold</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="light_min_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Light Min Threshold</label>
 		<description></description>
 		<state readOnly="true" />
@@ -304,19 +304,19 @@
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="air_temperature_current_value">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Air Temperature Current Value</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="air_temperature_max_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Air Temperature Max Threshold</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="air_temperature_min_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Air Temperature Min Threshold</label>
 		<description></description>
 		<state readOnly="true" />
@@ -346,19 +346,19 @@
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="fertilizer_current_value">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Fertilizer Current Value</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="fertilizer_max_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Fertilizer Max Threshold</label>
 		<description></description>
 		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="fertilizer_min_threshold">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Fertilizer Min Threshold</label>
 		<description></description>
 		<state readOnly="true" />

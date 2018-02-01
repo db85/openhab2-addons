@@ -4,12 +4,14 @@ import java.util.Arrays;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.smarthome.core.library.types.StringType;
 import org.eclipse.smarthome.core.thing.Channel;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
+import org.eclipse.smarthome.core.thing.type.ChannelTypeRegistry;
 import org.eclipse.smarthome.core.types.Command;
+import org.eclipse.smarthome.core.types.State;
+import org.eclipse.smarthome.core.types.UnDefType;
 import org.openhab.binding.parrotflower.internal.api.AnalysisStatus;
 import org.openhab.binding.parrotflower.internal.api.Battery;
 import org.openhab.binding.parrotflower.internal.api.Firmware;
@@ -33,10 +35,31 @@ import com.google.gson.annotations.SerializedName;
 @NonNullByDefault
 public class SensorDeviceHandler extends BaseThingHandler {
 
+    private ChannelTypeRegistry channelTypeRegistry;
     private final Logger logger = LoggerFactory.getLogger(SensorDeviceHandler.class);
 
-    public SensorDeviceHandler(Thing thing) {
+    public SensorDeviceHandler(ChannelTypeRegistry channelTypeRegistry, Thing thing) {
         super(thing);
+        this.channelTypeRegistry = channelTypeRegistry;
+    }
+
+    private State buildChannelState(Channel channel, String value) {
+        String acceptedItemType = channel.getAcceptedItemType();
+        if (acceptedItemType == null) {
+            return UnDefType.NULL;
+        }
+        switch (acceptedItemType) {
+            case "Number":
+                Double doubleValue = StateConverterUtils.parseDouble(value);
+                return StateConverterUtils.toDecimalType(doubleValue);
+            case "String":
+                return StateConverterUtils.toStringType(value);
+            case "DateTime":
+                return StateConverterUtils.toDateTimeType(value);
+            default:
+                logger.error("accepted item type {} not handeled", channel.getAcceptedItemType());
+        }
+        return UnDefType.NULL;
     }
 
     @Override
@@ -44,12 +67,25 @@ public class SensorDeviceHandler extends BaseThingHandler {
         // not supported
     }
 
+    private void updateAnalysisStatusChannel(String channelPrefix, @Nullable AnalysisStatus analysisStatus) {
+        if (analysisStatus == null) {
+            return;
+        }
+        updatenChannels(channelPrefix, analysisStatus);
+        GaugeValues gaugeValues = analysisStatus.getGaugeValues();
+        if (gaugeValues != null) {
+            updatenChannels(channelPrefix, gaugeValues);
+        }
+
+    }
+
     private void updateChannel(String channelId, String value) {
         Channel channel = getThing().getChannel(channelId);
         if (channel == null) {
             return;
         }
-        updateState(channel.getUID(), new StringType(value));
+
+        updateState(channel.getUID(), buildChannelState(channel, value));
     }
 
     public void updateChannels(GardenConfiguration gardenConfiguration, @Nullable GardenLocation gardenLocation) {
@@ -93,18 +129,6 @@ public class SensorDeviceHandler extends BaseThingHandler {
         updateAnalysisStatusChannel("air_temperature_", gardenLocation.getAirTemperature());
         updateAnalysisStatusChannel("light_", gardenLocation.getLight());
         updateAnalysisStatusChannel("fertilizer_", gardenLocation.getFertilizer());
-    }
-
-    private void updateAnalysisStatusChannel(String channelPrefix, @Nullable AnalysisStatus analysisStatus) {
-        if (analysisStatus == null) {
-            return;
-        }
-        updatenChannels(channelPrefix, analysisStatus);
-        GaugeValues gaugeValues = analysisStatus.getGaugeValues();
-        if (gaugeValues != null) {
-            updatenChannels(channelPrefix, gaugeValues);
-        }
-
     }
 
     private void updatenChannels(Object responseObject) {

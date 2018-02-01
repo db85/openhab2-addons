@@ -39,4 +39,6 @@ public class ParrotFlowerBindingConstants {
     // Api URL
     public static final String API_URL = "https://api-flower-power-pot.parrot.com/";
 
+    public static final String DATE_TIME_FORMAT = "yyyy-M-d H:m:s";
+
 }
