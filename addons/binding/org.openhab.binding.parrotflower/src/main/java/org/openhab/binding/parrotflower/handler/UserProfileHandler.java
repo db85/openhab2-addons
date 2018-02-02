@@ -7,6 +7,7 @@ import org.eclipse.smarthome.core.library.types.StringType;
 import org.eclipse.smarthome.core.thing.Channel;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
+import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
 import org.eclipse.smarthome.core.types.Command;
 import org.openhab.binding.parrotflower.internal.api.UserProfile;
@@ -33,6 +34,11 @@ public class UserProfileHandler extends BaseThingHandler {
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
         // not supported
+    }
+
+    @Override
+    public void initialize() {
+        updateStatus(ThingStatus.ONLINE);
     }
 
     private void updateChannel(String channelId, String value) {

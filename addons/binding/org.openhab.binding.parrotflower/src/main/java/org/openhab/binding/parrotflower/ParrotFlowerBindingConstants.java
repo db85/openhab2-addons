@@ -33,8 +33,8 @@ public class ParrotFlowerBindingConstants {
     public static final ThingTypeUID THING_TYPE_USER_PROFILE = new ThingTypeUID(BINDING_ID, "userprofile");
     public static final ThingTypeUID THING_TYPE_SENSOR_DEVICE = new ThingTypeUID(BINDING_ID, "sensordevice");
 
-    // List of all Channel ids
-    public static final String CHANNEL_1 = "channel1";
+    // Channels
+    public static final String CHANNEL_REFRESH = "refresh";
 
     // Api URL
     public static final String API_URL = "https://api-flower-power-pot.parrot.com/";

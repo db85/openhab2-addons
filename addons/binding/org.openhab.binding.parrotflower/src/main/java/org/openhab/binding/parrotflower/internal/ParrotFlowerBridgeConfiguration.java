@@ -5,5 +5,5 @@ public class ParrotFlowerBridgeConfiguration {
     public String clientSecret;
     public String username;
     public String password;
-    public String accessToken;
+    public int refreshInterval;
 }

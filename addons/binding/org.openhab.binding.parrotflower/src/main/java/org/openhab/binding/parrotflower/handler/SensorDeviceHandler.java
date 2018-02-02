@@ -7,8 +7,8 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.core.thing.Channel;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
+import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
-import org.eclipse.smarthome.core.thing.type.ChannelTypeRegistry;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.core.types.UnDefType;
@@ -35,12 +35,10 @@ import com.google.gson.annotations.SerializedName;
 @NonNullByDefault
 public class SensorDeviceHandler extends BaseThingHandler {
 
-    private ChannelTypeRegistry channelTypeRegistry;
     private final Logger logger = LoggerFactory.getLogger(SensorDeviceHandler.class);
 
-    public SensorDeviceHandler(ChannelTypeRegistry channelTypeRegistry, Thing thing) {
+    public SensorDeviceHandler(Thing thing) {
         super(thing);
-        this.channelTypeRegistry = channelTypeRegistry;
     }
 
     private State buildChannelState(Channel channel, String value) {
@@ -67,6 +65,11 @@ public class SensorDeviceHandler extends BaseThingHandler {
         // not supported
     }
 
+    @Override
+    public void initialize() {
+        updateStatus(ThingStatus.ONLINE);
+    }
+
     private void updateAnalysisStatusChannel(String channelPrefix, @Nullable AnalysisStatus analysisStatus) {
         if (analysisStatus == null) {
             return;
@@ -89,11 +92,10 @@ public class SensorDeviceHandler extends BaseThingHandler {
     }
 
     public void updateChannels(GardenConfiguration gardenConfiguration, @Nullable GardenLocation gardenLocation) {
-        logger.info("update sensor device");
-        updatenChannels(gardenConfiguration);
+        updatenChannels("general#", gardenConfiguration);
         SensorConfig sensorSonfig = gardenConfiguration.getSensor();
         if (sensorSonfig != null) {
-            updatenChannels(sensorSonfig);
+            updatenChannels("general#", sensorSonfig);
         }
         if (gardenLocation != null) {
             updateGardenLocationChannels(gardenLocation);
@@ -102,37 +104,33 @@ public class SensorDeviceHandler extends BaseThingHandler {
     }
 
     private void updateGardenLocationChannels(GardenLocation gardenLocation) {
-        updatenChannels(gardenLocation);
+        updatenChannels("general#", gardenLocation);
         Battery battery = gardenLocation.getBattery();
         if (battery != null) {
             GaugeValues batteryGaugeValues = battery.getGaugeValues();
             if (batteryGaugeValues != null) {
-                updatenChannels("battery_", batteryGaugeValues);
+                updatenChannels("battery#", batteryGaugeValues);
             }
         }
 
         Sensor sensor = gardenLocation.getSensor();
         if (sensor != null) {
-            updatenChannels(sensor);
+            updatenChannels("general#", sensor);
             Firmware firmware = sensor.getFirmwareUpdate();
             if (firmware != null) {
-                updatenChannels(firmware);
+                updatenChannels("general#", firmware);
             }
         }
 
         Watering watering = gardenLocation.getWatering();
         if (watering != null) {
-            updatenChannels("watering_", watering);
-            updateAnalysisStatusChannel("watering_", watering.getSoilMoisture());
+            updatenChannels("watering#", watering);
+            updateAnalysisStatusChannel("watering#", watering.getSoilMoisture());
         }
 
-        updateAnalysisStatusChannel("air_temperature_", gardenLocation.getAirTemperature());
-        updateAnalysisStatusChannel("light_", gardenLocation.getLight());
-        updateAnalysisStatusChannel("fertilizer_", gardenLocation.getFertilizer());
-    }
-
-    private void updatenChannels(Object responseObject) {
-        updatenChannels("", responseObject);
+        updateAnalysisStatusChannel("air_temperature#", gardenLocation.getAirTemperature());
+        updateAnalysisStatusChannel("light#", gardenLocation.getLight());
+        updateAnalysisStatusChannel("fertilizer#", gardenLocation.getFertilizer());
     }
 
     private void updatenChannels(String channelPrefix, Object responseObject) {

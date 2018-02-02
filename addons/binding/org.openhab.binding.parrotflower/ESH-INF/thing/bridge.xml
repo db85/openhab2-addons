@@ -7,6 +7,10 @@
 		<label>Parrot Flower Power API</label>
 		<description>This bridge represents the gateway to Parrot Flower Power API.</description>
 
+        <channels>
+            <channel id="refresh" typeId="refresh" />
+        </channels>
+        
 		<config-description>
 			<parameter name="clientId" type="text">
 				<label>Client ID</label>
@@ -32,6 +36,19 @@
 				<required>true</required>
 				<context>password</context>
 			</parameter>
+
+			<parameter name="refreshInterval" type="integer">
+				<label>Refresh Interval</label>
+				<description>Refresh interval in minutes</description>
+				<required>true</required>
+				<default>720</default>
+			</parameter>
 		</config-description>
 	</bridge-type>
+
+	<channel-type id="refresh">
+		<item-type>Switch</item-type>
+		<label>Refresh</label>
+		<description>Refresh the devices from api</description>
+	</channel-type>
 </thing:thing-descriptions>
