@@ -18,7 +18,10 @@ Export-Package:
  org.openhab.binding.parrotflower,
  org.openhab.binding.parrotflower.handler
 Import-Package: 
+ com.google.gson,
  com.google.gson.annotations,
+ com.google.gson.reflect,
+ com.google.gson.stream,
  org.apache.commons.lang,
  org.eclipse.jdt.annotation;resolution:=optional,
  org.eclipse.smarthome.config.core,
