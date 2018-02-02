@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2010-2018 by the respective copyright holders.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
 package org.openhab.binding.parrotflower.handler;
 
 import static org.openhab.binding.parrotflower.ParrotFlowerBindingConstants.*;
@@ -43,6 +51,12 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * The {@link ParrotFlowerBridgeHandler} class is responsible for handling commands, which are
+ * sent to one of the channels.
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class ParrotFlowerBridgeHandler extends BaseBridgeHandler {
 
     public interface DiscoveryListener {

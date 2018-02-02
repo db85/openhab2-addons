@@ -18,7 +18,8 @@ Export-Package:
  org.openhab.binding.parrotflower,
  org.openhab.binding.parrotflower.handler
 Import-Package: 
- org.apache.commons.lang;version="2.6.0",
+ com.google.gson.annotations,
+ org.apache.commons.lang,
  org.eclipse.jdt.annotation;resolution:=optional,
  org.eclipse.smarthome.config.core,
  org.eclipse.smarthome.config.discovery,
@@ -35,4 +36,3 @@ Import-Package:
  org.osgi.service.http;version="1.2.1",
  org.slf4j
 Service-Component: OSGI-INF/*.xml
-Require-Bundle: com.google.gson

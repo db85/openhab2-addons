@@ -7,10 +7,10 @@
 		<label>Parrot Flower Power API</label>
 		<description>This bridge represents the gateway to Parrot Flower Power API.</description>
 
-        <channels>
-            <channel id="refresh" typeId="refresh" />
-        </channels>
-        
+		<channels>
+			<channel id="refresh" typeId="refresh" />
+		</channels>
+
 		<config-description>
 			<parameter name="clientId" type="text">
 				<label>Client ID</label>
