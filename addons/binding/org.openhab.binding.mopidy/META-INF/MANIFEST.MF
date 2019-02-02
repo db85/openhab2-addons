@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.openhab.binding.mopidy
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .,
+ lib/rxjava-2.2.6.jar,
+ lib/reactive-streams-1.0.2.jar,
+ lib/okhttp-3.12.1.jar,
+ lib/okio-1.17.3.jar,
+ lib/gson-2.8.5.jar,
+ lib/gson-extras-2.8.5.jar
+Bundle-ManifestVersion: 2
+Bundle-Name: mopidy Binding
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-SymbolicName: org.openhab.binding.mopidy;singleton:=true
+Bundle-Vendor: openHAB
+Bundle-Version: 2.5.0.qualifier
+Import-Package: 
+ org.eclipse.jdt.annotation;resolution:=optional,
+ org.eclipse.smarthome.config.core,
+ org.eclipse.smarthome.core.library.types,
+ org.eclipse.smarthome.core.thing,
+ org.eclipse.smarthome.core.thing.binding,
+ org.eclipse.smarthome.core.thing.binding.builder,
+ org.eclipse.smarthome.core.thing.type,
+ org.eclipse.smarthome.core.types,
+ org.eclipse.smarthome.core.util,
+ org.slf4j
+Service-Component: OSGI-INF/*.xml

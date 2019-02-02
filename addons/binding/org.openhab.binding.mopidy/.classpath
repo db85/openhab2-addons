@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="lib" path="lib/rxjava-2.2.6.jar" sourcepath="C:/Users/danie/.m2/repository/io/reactivex/rxjava2/rxjava/2.2.6/rxjava-2.2.6-sources.jar"/>
+	<classpathentry kind="lib" path="lib/reactive-streams-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/okhttp-3.12.1.jar"/>
+	<classpathentry kind="lib" path="lib/okio-1.17.3.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.8.5.jar"/>
+	<classpathentry kind="lib" path="lib/gson-extras-2.8.5.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
