@@ -9,6 +9,16 @@ public class PlayerStateChangedEvent extends EventMessage {
     @SerializedName("new_state")
     private String newState;
 
+    public PlayerStateChangedEvent() {
+
+    }
+
+    public PlayerStateChangedEvent(String oldState, String newState) {
+        super();
+        this.oldState = oldState;
+        this.newState = newState;
+    }
+
     public String getOldState() {
         return oldState;
     }

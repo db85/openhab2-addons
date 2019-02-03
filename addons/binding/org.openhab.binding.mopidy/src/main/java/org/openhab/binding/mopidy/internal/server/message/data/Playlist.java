@@ -1,5 +1,7 @@
 package org.openhab.binding.mopidy.internal.server.message.data;
 
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Playlist {
@@ -11,6 +13,8 @@ public class Playlist {
     private String name;
     @SerializedName("uri")
     private String uri;
+    @SerializedName("tracks")
+    private List<Track> tracks;
 
     public String getModel() {
         return model;
@@ -26,5 +30,9 @@ public class Playlist {
 
     public String getUri() {
         return uri;
+    }
+
+    public List<Track> getTracks() {
+        return tracks;
     }
 }

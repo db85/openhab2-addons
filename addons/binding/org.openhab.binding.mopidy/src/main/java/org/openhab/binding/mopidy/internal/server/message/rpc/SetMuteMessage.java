@@ -2,7 +2,7 @@ package org.openhab.binding.mopidy.internal.server.message.rpc;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MuteMessage extends RpcMessage {
+public class SetMuteMessage extends RpcMessage {
 
     class MutePara {
         @SerializedName("mute")
@@ -16,7 +16,7 @@ public class MuteMessage extends RpcMessage {
     @SerializedName("params")
     private MutePara params;
 
-    public MuteMessage(Boolean mute) {
+    public SetMuteMessage(Boolean mute) {
         params = new MutePara(mute);
     }
 

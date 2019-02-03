@@ -32,7 +32,11 @@ public class MopidyBindingConstants {
     public static final String CHANNEL_PLAYBACK_VOLUME = "playback_volume";
     public static final String CHANNEL_PLAYBACK_VOLUME_MUTE = "playback_volume_mute";
     public static final String CHANNEL_PLAYER = "player";
+    public static final String CHANNEL_PLAYLIST_NAME = "name";
+    public static final String CHANNEL_PLAYLIST_LAST_MODIFIED = "last_modified";
+    public static final String CHANNEL_PLAYLIST_PLAY = "play";
 
     // List of all Thing Type UIDs
     public static final ThingTypeUID THING_TYPE_SERVER = new ThingTypeUID(BINDING_ID, "server");
+    public static final ThingTypeUID THING_TYPE_PLAYLIST = new ThingTypeUID(BINDING_ID, "playlist");
 }

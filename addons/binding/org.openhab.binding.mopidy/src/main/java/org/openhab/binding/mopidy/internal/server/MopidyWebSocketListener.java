@@ -15,7 +15,6 @@ import org.openhab.binding.mopidy.internal.server.message.event.TrackPlaybackRes
 import org.openhab.binding.mopidy.internal.server.message.event.TrackPlaybackStarted;
 import org.openhab.binding.mopidy.internal.server.message.event.TracklistChangedEvent;
 import org.openhab.binding.mopidy.internal.server.message.event.VolumeChangedEvent;
-import org.openhab.binding.mopidy.internal.server.message.rpc.ResultMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +37,7 @@ public class MopidyWebSocketListener extends WebSocketListener {
 
     private Logger logger = LoggerFactory.getLogger(MopidyWebSocketListener.class);
     private BehaviorSubject<EventMessage> messageSubject = BehaviorSubject.create();
-    private BehaviorSubject<ResultMessage> rpcResultSubject = BehaviorSubject.create();
+    private BehaviorSubject<String> rpcResultSubject = BehaviorSubject.create();
 
     private RuntimeTypeAdapterFactory<EventMessage> adapterFactory = RuntimeTypeAdapterFactory
             .of(EventMessage.class, "event").registerSubtype(MuteChangedEvent.class, "mute_changed")
@@ -57,7 +56,6 @@ public class MopidyWebSocketListener extends WebSocketListener {
             .registerSubtype(SeekedEvent.class, "seeked");
 
     private Gson eventGson = new GsonBuilder().registerTypeAdapterFactory(adapterFactory).create();
-    private Gson defaultGson = new GsonBuilder().create();
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
@@ -69,8 +67,7 @@ public class MopidyWebSocketListener extends WebSocketListener {
         logger.debug("webSocket onMessage: {}", text);
 
         if (text.startsWith("{\"jsonrpc\"")) {
-            ResultMessage resultMessage = defaultGson.fromJson(text, ResultMessage.class);
-            rpcResultSubject.onNext(resultMessage);
+            rpcResultSubject.onNext(text);
         } else {
             EventMessage event = eventGson.fromJson(text, EventMessage.class);
             logger.info("event {} recived", event.getEvent());
@@ -96,7 +93,7 @@ public class MopidyWebSocketListener extends WebSocketListener {
         return messageSubject;
     }
 
-    Observable<ResultMessage> observeRpcResultMessages() {
+    Observable<String> observeRpcResultMessages() {
         return rpcResultSubject;
     }
 }

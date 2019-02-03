@@ -2,7 +2,7 @@ package org.openhab.binding.mopidy.internal.server.message.rpc;
 
 import com.google.gson.annotations.SerializedName;
 
-public abstract class RpcMessage {
+public class RpcMessage {
     @SerializedName("jsonrpc")
     private String jsonrpc = "2.0";
     @SerializedName("id")

@@ -18,21 +18,29 @@ import org.openhab.binding.mopidy.internal.server.ServerConnection;
 import org.openhab.binding.mopidy.internal.server.message.data.Album;
 import org.openhab.binding.mopidy.internal.server.message.data.TLTrack;
 import org.openhab.binding.mopidy.internal.server.message.data.Track;
+import org.openhab.binding.mopidy.internal.server.message.event.EventMessage;
 import org.openhab.binding.mopidy.internal.server.message.event.MuteChangedEvent;
 import org.openhab.binding.mopidy.internal.server.message.event.PlayerStateChangedEvent;
 import org.openhab.binding.mopidy.internal.server.message.event.TrackPlaybackChanged;
 import org.openhab.binding.mopidy.internal.server.message.event.VolumeChangedEvent;
+import org.openhab.binding.mopidy.internal.server.message.rpc.GetCurrentPlayingTrack;
+import org.openhab.binding.mopidy.internal.server.message.rpc.GetMuteMessage;
+import org.openhab.binding.mopidy.internal.server.message.rpc.GetPlaybackStateMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.GetVolumeMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.MuteMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.NextMessage;
+import org.openhab.binding.mopidy.internal.server.message.rpc.PauseMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.PlayMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.PreviousMessage;
+import org.openhab.binding.mopidy.internal.server.message.rpc.RpcMessage;
+import org.openhab.binding.mopidy.internal.server.message.rpc.SetMuteMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.SetVolumeMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.StopMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * The {@link MopidyServerHandler} is responsible for handling commands, which are
@@ -46,7 +54,8 @@ public class MopidyServerHandler extends BaseBridgeHandler {
     private Logger logger = LoggerFactory.getLogger(MopidyServerHandler.class);
     private ServerConfig config;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private ServerConnection connection;
+    private BehaviorSubject<ServerConnection> connectionSubject = BehaviorSubject.create();
+    private PublishSubject<EventMessage> eventMessageSubject = PublishSubject.create();
 
     public MopidyServerHandler(Bridge bridge) {
         super(bridge);
@@ -56,49 +65,64 @@ public class MopidyServerHandler extends BaseBridgeHandler {
     public void initialize() {
         logger.info("Initializing MopidyServerHandler");
         config = getConfigAs(ServerConfig.class);
-        updateStatus(ThingStatus.ONLINE);
         connectToServer();
     }
 
     @Override
     public void dispose() {
         logger.info("Disposing MopidyServerHandler");
+        compositeDisposable.dispose();
     }
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        // TODO Auto-generated method stub
         logger.info("handleCommand {}, {}", channelUID.getAsString(), command.toFullString());
-        if (connection == null) {
-            return;
-        }
 
         if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYER)) {
             if (PlayPauseType.PLAY.equals(command)) {
-                connection.sendMessage(new PlayMessage());
+                sendMessage(new PlayMessage());
             } else if (PlayPauseType.PAUSE.equals(command)) {
-                connection.sendMessage(new StopMessage());
+                sendMessage(new PauseMessage());
             } else if (NextPreviousType.NEXT.equals(command)) {
-                connection.sendMessage(new NextMessage());
+                sendMessage(new NextMessage());
             } else if (NextPreviousType.PREVIOUS.equals(command)) {
-                connection.sendMessage(new PreviousMessage());
+                sendMessage(new PreviousMessage());
+            } else if (command instanceof RefreshType) {
+                sendMessage(new GetPlaybackStateMessage());
             }
 
         } else if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_VOLUME_MUTE)) {
             if (OnOffType.ON.equals(command)) {
-                connection.sendMessage(new MuteMessage(true));
+                sendMessage(new SetMuteMessage(true));
             } else if (OnOffType.OFF.equals(command)) {
-                connection.sendMessage(new MuteMessage(false));
+                sendMessage(new SetMuteMessage(false));
+            } else if (command instanceof RefreshType) {
+                sendMessage(new GetMuteMessage());
             }
         } else if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_VOLUME)) {
             if (command instanceof RefreshType) {
-                connection.sendMessage(new GetVolumeMessage());
-            }
-            if (command instanceof DecimalType) {
+                sendMessage(new GetVolumeMessage());
+            } else if (command instanceof DecimalType) {
                 DecimalType value = (DecimalType) command;
-                connection.sendMessage(new SetVolumeMessage(value.intValue()));
+                sendMessage(new SetVolumeMessage(value.intValue()));
+            }
+        } else if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_TRACK_NAME)) {
+            if (command instanceof RefreshType) {
+                sendMessage(new GetCurrentPlayingTrack());
             }
         }
+    }
+
+    public void sendMessage(RpcMessage rpcMessage) {
+        compositeDisposable.add(connectionSubject.firstOrError().subscribe(connection -> {
+            connection.sendMessage(rpcMessage);
+        }, throwable -> {
+            logger.error("send message failed", throwable);
+        }));
+    }
+
+    public Observable<EventMessage> observeEventMessages() {
+        return eventMessageSubject;
     }
 
     private void connectToServer() {
@@ -122,24 +146,25 @@ public class MopidyServerHandler extends BaseBridgeHandler {
 
         compositeDisposable.add(ServerConnection.create(getThing().getUID(), host, port).subscribe(connection -> {
             logger.info("connection created");
-            this.connection = connection;
-            connected();
+            updateStatus(ThingStatus.ONLINE);
+            connectionSubject.onNext(connection);
+            connected(connection);
         }, throwable -> {
             logger.info("connection failed", throwable);
             updateStatus(ThingStatus.OFFLINE);
         }));
     }
 
-    private void connected() {
+    private void connected(ServerConnection connection) {
         compositeDisposable.add(connection.observeEventMessages().subscribe(eventMessage -> {
             if (eventMessage instanceof PlayerStateChangedEvent) {
                 String state = ((PlayerStateChangedEvent) eventMessage).getNewState();
                 updateState(MopidyBindingConstants.CHANNEL_PLAYBACK_STATE, new StringType(state));
-                // if (state.equals("playing")) {
-                // updateState(MopidyBindingConstants.CHANNEL_PLAYER, PlayPauseType.PAUSE);
-                // } else {
-                // updateState(MopidyBindingConstants.CHANNEL_PLAYER, PlayPauseType.PLAY);
-                // }
+                if (state.equals("playing")) {
+                    updateState(MopidyBindingConstants.CHANNEL_PLAYER, PlayPauseType.PLAY);
+                } else {
+                    updateState(MopidyBindingConstants.CHANNEL_PLAYER, PlayPauseType.PAUSE);
+                }
             } else if (eventMessage instanceof VolumeChangedEvent) {
                 updateState(MopidyBindingConstants.CHANNEL_PLAYBACK_VOLUME,
                         new PercentType(((VolumeChangedEvent) eventMessage).getVolume()));
@@ -152,6 +177,8 @@ public class MopidyServerHandler extends BaseBridgeHandler {
             } else if (eventMessage instanceof MuteChangedEvent) {
                 updateState(MopidyBindingConstants.CHANNEL_PLAYBACK_VOLUME_MUTE,
                         OnOffType.from(((MuteChangedEvent) eventMessage).getMute()));
+            } else {
+                eventMessageSubject.onNext(eventMessage);
             }
         }, throwable -> {
             logger.info("observe event messages failed", throwable);

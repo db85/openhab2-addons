@@ -6,6 +6,15 @@ public class MuteChangedEvent extends EventMessage {
     @SerializedName("mute")
     private Boolean mute;
 
+    public MuteChangedEvent() {
+        super();
+    }
+
+    public MuteChangedEvent(Boolean mute) {
+        super();
+        this.mute = mute;
+    }
+
     public Boolean getMute() {
         return mute;
     }

@@ -2,11 +2,11 @@ package org.openhab.binding.mopidy.internal.server.message.rpc;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResultMessage extends RpcMessage {
+public class ResultMessage<T> extends RpcMessage {
     @SerializedName("result")
-    private Object result;
+    private T result;
 
-    public Object getResult() {
+    public T getResult() {
         return result;
     }
 }

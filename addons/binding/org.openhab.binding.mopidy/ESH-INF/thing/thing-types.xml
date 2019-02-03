@@ -32,6 +32,28 @@
 		</config-description>
 	</bridge-type>
 
+	<thing-type id="playlist">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="server" />
+		</supported-bridge-type-refs>
+
+		<label>Mopidy Playlist</label>
+		<description>Created playlist in mopidy</description>
+
+		<channels>
+			<channel id="name" typeId="playlist_name" />
+			<channel id="last_modified" typeId="playlist_last_modified" />
+			<channel id="play" typeId="playlist_play" />
+		</channels>
+
+		<config-description>
+			<parameter name="uri" type="text" required="true">
+				<label>Uri</label>
+				<description>Playlist uri</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
 	<channel-type id="playback_state">
 		<item-type>String</item-type>
 		<label>Playback State</label>
@@ -61,6 +83,21 @@
 		<item-type>Player</item-type>
 		<label>Player</label>
 		<description>Player Control</description>
+	</channel-type>
+	<channel-type id="playlist_name">
+		<item-type>String</item-type>
+		<label>Name</label>
+		<description>Name of the playlist</description>
+	</channel-type>
+	<channel-type id="playlist_last_modified">
+		<item-type>DateTime</item-type>
+		<label>Last modified</label>
+		<description>Last modified</description>
+	</channel-type>
+	<channel-type id="playlist_play">
+		<item-type>Switch</item-type>
+		<label>Play</label>
+		<description>Toggle to play playlist</description>
 	</channel-type>
 
 </thing:thing-descriptions>

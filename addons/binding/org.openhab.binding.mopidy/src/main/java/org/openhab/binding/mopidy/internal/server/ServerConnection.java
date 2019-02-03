@@ -3,17 +3,30 @@
  */
 package org.openhab.binding.mopidy.internal.server;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 import org.eclipse.smarthome.core.thing.ThingUID;
+import org.openhab.binding.mopidy.internal.server.message.data.Playlist;
+import org.openhab.binding.mopidy.internal.server.message.data.TLTrack;
 import org.openhab.binding.mopidy.internal.server.message.event.EventMessage;
+import org.openhab.binding.mopidy.internal.server.message.event.MuteChangedEvent;
+import org.openhab.binding.mopidy.internal.server.message.event.PlayerStateChangedEvent;
+import org.openhab.binding.mopidy.internal.server.message.event.PlaylistResponse;
+import org.openhab.binding.mopidy.internal.server.message.event.TrackPlaybackChanged;
 import org.openhab.binding.mopidy.internal.server.message.event.VolumeChangedEvent;
+import org.openhab.binding.mopidy.internal.server.message.rpc.GetCurrentPlayingTrack;
+import org.openhab.binding.mopidy.internal.server.message.rpc.GetMuteMessage;
+import org.openhab.binding.mopidy.internal.server.message.rpc.GetPlaybackStateMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.GetVolumeMessage;
+import org.openhab.binding.mopidy.internal.server.message.rpc.PlaylistLookupMessage;
+import org.openhab.binding.mopidy.internal.server.message.rpc.ResultMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.RpcMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposables;
@@ -78,16 +91,38 @@ public class ServerConnection {
 
     public Observable<EventMessage> observeEventMessages() {
         return Observable.merge(listener.observeEventMessages(),
-                listener.observeRpcResultMessages().flatMap(rpcResult -> {
-                    RpcMessage outgoingMessage = messages.get(rpcResult.getId());
+                listener.observeRpcResultMessages().flatMap(rpcResultJson -> {
+                    RpcMessage rpcMessage = gson.fromJson(rpcResultJson, RpcMessage.class);
+                    RpcMessage outgoingMessage = messages.get(rpcMessage.getId());
+
                     if (outgoingMessage instanceof GetVolumeMessage) {
-                        return Observable.just(new VolumeChangedEvent(((Double) rpcResult.getResult()).intValue()));
+                        return Observable.just(
+                                new VolumeChangedEvent(fromJson(rpcResultJson, Double.class).getResult().intValue()));
+                    } else if (outgoingMessage instanceof GetPlaybackStateMessage) {
+                        return Observable.just(
+                                new PlayerStateChangedEvent("", fromJson(rpcResultJson, String.class).getResult()));
+                    } else if (outgoingMessage instanceof GetMuteMessage) {
+                        return Observable
+                                .just(new MuteChangedEvent(fromJson(rpcResultJson, Boolean.class).getResult()));
+                    } else if (outgoingMessage instanceof GetCurrentPlayingTrack) {
+                        return Observable
+                                .just(new TrackPlaybackChanged(fromJson(rpcResultJson, TLTrack.class).getResult()));
+                    } else if (outgoingMessage instanceof PlaylistLookupMessage) {
+                        PlaylistLookupMessage lookupMessage = (PlaylistLookupMessage) outgoingMessage;
+                        return Observable.just(new PlaylistResponse(fromJson(rpcResultJson, Playlist.class).getResult(),
+                                lookupMessage.isPlayTracks()));
                     }
+
                     return Observable.empty();
                 }));
     }
 
-    public void sendMessage(RpcMessage rpcMessage) {
+    private <T> ResultMessage<T> fromJson(String text, Class<T> typeoff) {
+        Type type = TypeToken.getParameterized(ResultMessage.class, typeoff).getType();
+        return gson.fromJson(text, type);
+    }
+
+    public synchronized void sendMessage(RpcMessage rpcMessage) {
         long id = messageId++;
         rpcMessage.setId(id);
 
