@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.event;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link SeekedEvent} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class SeekedEvent extends EventMessage {
     @SerializedName("time_position")
     private int timePosition;

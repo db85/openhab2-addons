@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.event;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link PlayerStateChangedEvent} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class PlayerStateChangedEvent extends EventMessage {
 
     @SerializedName("old_state")

@@ -12,6 +12,11 @@
  */
 package org.openhab.binding.mopidy.internal.server.message.event;
 
+/**
+ * The {@link TracklistChangedEvent} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class TracklistChangedEvent extends EventMessage {
 
 }

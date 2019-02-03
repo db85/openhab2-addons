@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.rpc;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link PreviousMessage} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class PreviousMessage extends RpcMessage {
     @SerializedName("method")
     private String method = "core.playback.previous";

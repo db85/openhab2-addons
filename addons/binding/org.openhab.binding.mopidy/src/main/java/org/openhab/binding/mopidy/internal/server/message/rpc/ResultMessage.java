@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.rpc;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link ResultMessage} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class ResultMessage<T> extends RpcMessage {
     @SerializedName("result")
     private T result;

@@ -12,6 +12,11 @@
  */
 package org.openhab.binding.mopidy.internal.server.message.event;
 
+/**
+ * The {@link TrackPlaybackResumed} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class TrackPlaybackResumed extends TrackPlaybackChanged {
 
 }

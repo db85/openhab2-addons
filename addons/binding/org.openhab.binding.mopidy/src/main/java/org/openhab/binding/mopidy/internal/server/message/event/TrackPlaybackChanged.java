@@ -16,6 +16,11 @@ import org.openhab.binding.mopidy.internal.server.message.data.TLTrack;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link TrackPlaybackChanged} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class TrackPlaybackChanged extends EventMessage {
     @SerializedName("time_position")
     private int timePosition;

@@ -16,6 +16,11 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link AddToTracklistMessage} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class AddToTracklistMessage extends RpcMessage {
 
     class AddToTracklistPara {

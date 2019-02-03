@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.event;
 
 import org.openhab.binding.mopidy.internal.server.message.data.Playlist;
 
+/**
+ * The {@link PlaylistResponse} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class PlaylistResponse extends EventMessage {
 
     private Playlist playlist;

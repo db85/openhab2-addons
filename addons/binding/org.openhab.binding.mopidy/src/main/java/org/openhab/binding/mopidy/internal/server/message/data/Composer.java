@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.data;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link Composer} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class Composer {
     @SerializedName("__model__")
     private String model;

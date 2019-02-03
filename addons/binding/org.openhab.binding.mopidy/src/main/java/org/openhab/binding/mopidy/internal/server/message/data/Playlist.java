@@ -16,6 +16,11 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link Playlist} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class Playlist {
     @SerializedName("__model__")
     private String model;

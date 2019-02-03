@@ -16,6 +16,11 @@ import org.openhab.binding.mopidy.internal.server.message.data.Playlist;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link PlaylistChangedEvent} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class PlaylistChangedEvent extends EventMessage {
     @SerializedName("playlist")
     private Playlist playlist;

@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.rpc;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link PlaylistLookupMessage} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class PlaylistLookupMessage extends RpcMessage {
 
     class LookupPara {

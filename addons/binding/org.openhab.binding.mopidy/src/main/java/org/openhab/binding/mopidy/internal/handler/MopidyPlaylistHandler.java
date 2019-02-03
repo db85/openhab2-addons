@@ -41,6 +41,12 @@ import org.slf4j.LoggerFactory;
 
 import io.reactivex.disposables.CompositeDisposable;
 
+/**
+ * The {@link MopidyPlaylistHandler} is responsible for handling commands, which are
+ * sent to one of the channels.
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class MopidyPlaylistHandler extends BaseThingHandler {
 
     private Logger logger = LoggerFactory.getLogger(MopidyPlaylistHandler.class);

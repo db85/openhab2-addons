@@ -12,6 +12,11 @@
  */
 package org.openhab.binding.mopidy.internal.server.message.event;
 
+/**
+ * The {@link PlaylistsLoadedEvent} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class PlaylistsLoadedEvent extends EventMessage {
 
 }

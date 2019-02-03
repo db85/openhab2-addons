@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.event;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link VolumeChangedEvent} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class VolumeChangedEvent extends EventMessage {
     @SerializedName("volume")
     private int volume;

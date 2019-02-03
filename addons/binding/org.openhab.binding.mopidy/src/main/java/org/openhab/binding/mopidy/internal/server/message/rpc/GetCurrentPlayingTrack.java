@@ -14,6 +14,11 @@ package org.openhab.binding.mopidy.internal.server.message.rpc;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link GetCurrentPlayingTrack} is a json model
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class GetCurrentPlayingTrack extends RpcMessage {
     @SerializedName("method")
     private String method = "core.playback.get_current_tl_track";
