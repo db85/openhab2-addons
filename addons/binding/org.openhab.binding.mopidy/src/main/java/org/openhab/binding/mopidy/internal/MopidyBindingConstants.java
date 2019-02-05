@@ -29,9 +29,14 @@ public class MopidyBindingConstants {
     public static final String CHANNEL_PLAYBACK_STATE = "playback_state";
     public static final String CHANNEL_PLAYBACK_TRACK_NAME = "playback_track_name";
     public static final String CHANNEL_PLAYBACK_TRACK_ALBUM = "playback_track_album";
+    public static final String CHANNEL_PLAYBACK_TRACK_ARTIST = "playback_track_artist";
     public static final String CHANNEL_PLAYBACK_VOLUME = "playback_volume";
     public static final String CHANNEL_PLAYBACK_VOLUME_MUTE = "playback_volume_mute";
     public static final String CHANNEL_PLAYER = "player";
+    public static final String CHANNEL_PLAYBACK_STOP = "playback_stop";
+    public static final String CHANNEL_PLAYBACK_LENGHT = "playback_length";
+    public static final String CHANNEL_PLAYBACK_PROGRESS = "playback_progress";
+    public static final String CHANNEL_PLAYBACK_REPEAT = "playlist_repeat";
     public static final String CHANNEL_PLAYLIST_NAME = "name";
     public static final String CHANNEL_PLAYLIST_LAST_MODIFIED = "last_modified";
     public static final String CHANNEL_PLAYLIST_PLAY = "play";

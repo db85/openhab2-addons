@@ -22,11 +22,13 @@ import org.openhab.binding.mopidy.internal.server.message.event.EventMessage;
 import org.openhab.binding.mopidy.internal.server.message.event.MuteChangedEvent;
 import org.openhab.binding.mopidy.internal.server.message.event.PlayerStateChangedEvent;
 import org.openhab.binding.mopidy.internal.server.message.event.PlaylistResponse;
+import org.openhab.binding.mopidy.internal.server.message.event.RepeatChangedEvent;
 import org.openhab.binding.mopidy.internal.server.message.event.TrackPlaybackChanged;
 import org.openhab.binding.mopidy.internal.server.message.event.VolumeChangedEvent;
 import org.openhab.binding.mopidy.internal.server.message.rpc.GetCurrentPlayingTrack;
 import org.openhab.binding.mopidy.internal.server.message.rpc.GetMuteMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.GetPlaybackStateMessage;
+import org.openhab.binding.mopidy.internal.server.message.rpc.GetRepeatMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.GetVolumeMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.PlaylistLookupMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.ResultMessage;
@@ -120,6 +122,9 @@ public class ServerConnection {
                         PlaylistLookupMessage lookupMessage = (PlaylistLookupMessage) outgoingMessage;
                         return Observable.just(new PlaylistResponse(fromJson(rpcResultJson, Playlist.class).getResult(),
                                 lookupMessage.isPlayTracks()));
+                    } else if (outgoingMessage instanceof GetRepeatMessage) {
+                        return Observable
+                                .just(new RepeatChangedEvent(fromJson(rpcResultJson, Boolean.class).getResult()));
                     }
 
                     return Observable.empty();
