@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.mopidy.internal.handler;
 
 import org.eclipse.smarthome.core.library.types.DecimalType;
@@ -23,6 +35,11 @@ import org.openhab.binding.mopidy.internal.server.message.rpc.SetRepeatMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.SetVolumeMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.StopMessage;
 
+/**
+ * The {@link CommandRequestMapper} is responsible for handling commands
+ *
+ * @author Daniel Bauer - Initial contribution
+ */
 public class CommandRequestMapper {
 
     public RpcMessage transform(ChannelUID channelUID, Command command) {
