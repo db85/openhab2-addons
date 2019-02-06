@@ -152,7 +152,7 @@ public class MopidyServerHandler extends BaseBridgeHandler {
         compositeDisposable.add(connectionSubject.firstOrError().subscribe(connection -> {
             connection.sendMessage(rpcMessage);
         }, throwable -> {
-            logger.error("send message failed", throwable);
+            logger.error("send message failed: ", throwable);
         }));
     }
 
@@ -164,24 +164,8 @@ public class MopidyServerHandler extends BaseBridgeHandler {
         String host = config.getHostname();
         int port = config.getPort();
 
-        // serverConnectionRX = ServerConnection.create(getThing().getUID(), host, port)
-        // .doOnNext(item -> updateOnlineState(true)).doOnError(e -> updateOnlineState(false))
-        // .retryWhen(new RetryWithDelay(1, TimeUnit.MINUTES)).repeat().replay(1).refCount();
-        //
-        // Subscription serverUpdateSubscription = serverConnectionRX
-        // .flatMap(connection -> connection.getSocketHandler().getServerRx())
-        // .subscribe(serverData -> updateServerState(serverData));
-        //
-        // Subscription serverConnectionSubscription = serverConnectionRX.subscribe(connection -> {
-        // this.connection = connection;
-        // });
-        //
-        // subscription.add(serverUpdateSubscription);
-        // subscription.add(serverConnectionSubscription);
-
         compositeDisposable.add(ServerConnection.create(getThing().getUID(), host, port).subscribe(connection -> {
             logger.info("connection created");
-            updateStatus(ThingStatus.ONLINE);
             connectionSubject.onNext(connection);
             connected(connection);
         }, throwable -> {
@@ -230,7 +214,16 @@ public class MopidyServerHandler extends BaseBridgeHandler {
                 eventMessageSubject.onNext(eventMessage);
             }
         }, throwable -> {
-            logger.info("observe event messages failed", throwable);
+            logger.info("observe event messages failed: ", throwable);
+            updateStatus(ThingStatus.OFFLINE);
+        }));
+
+        compositeDisposable.add(connection.observeConnectionStatus().subscribe(connectionStatus -> {
+            if (connectionStatus == ServerConnection.ConnectionStatus.CONNECTED) {
+                updateStatus(ThingStatus.ONLINE);
+            } else if (connectionStatus == ServerConnection.ConnectionStatus.DISCONNECTED) {
+                updateStatus(ThingStatus.OFFLINE);
+            }
         }));
     }
 
