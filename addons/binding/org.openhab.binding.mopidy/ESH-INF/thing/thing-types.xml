@@ -70,15 +70,15 @@
 		<description>Name of the current playing track</description>
 	</channel-type>
 	<channel-type id="playback_track_album">
-        <item-type>String</item-type>
-        <label>Playback Track Album</label>
-        <description>Album of the current playing track</description>
-    </channel-type>
-        <channel-type id="playback_track_artist">
-        <item-type>String</item-type>
-        <label>Playback Track Artist</label>
-        <description>Artist of the current playing track</description>
-    </channel-type>
+		<item-type>String</item-type>
+		<label>Playback Track Album</label>
+		<description>Album of the current playing track</description>
+	</channel-type>
+	<channel-type id="playback_track_artist">
+		<item-type>String</item-type>
+		<label>Playback Track Artist</label>
+		<description>Artist of the current playing track</description>
+	</channel-type>
 	<channel-type id="playback_volume">
 		<item-type>Dimmer</item-type>
 		<label>Playback Volume</label>
@@ -90,20 +90,20 @@
 		<description>Current playback mute state</description>
 	</channel-type>
 	<channel-type id="playback_stop">
-	   <item-type>Switch</item-type>
+		<item-type>Switch</item-type>
 		<label>Stop Playback</label>
 		<description>Stop current playback</description>
 	</channel-type>
 	<channel-type id="playback_length">
-        <item-type>Number</item-type>
-        <label>Playback Length</label>
-        <description>Current playback length</description>
-    </channel-type>
-    <channel-type id="playback_progress">
-        <item-type>Number</item-type>
-        <label>Playback Progress</label>
-        <description>Current playback progress</description>
-    </channel-type>
+		<item-type>Number</item-type>
+		<label>Playback Length</label>
+		<description>Current playback length</description>
+	</channel-type>
+	<channel-type id="playback_progress">
+		<item-type>Number</item-type>
+		<label>Playback Progress</label>
+		<description>Current playback progress</description>
+	</channel-type>
 	<channel-type id="player">
 		<item-type>Player</item-type>
 		<label>Player</label>
@@ -124,10 +124,10 @@
 		<label>Play</label>
 		<description>Toggle to play playlist</description>
 	</channel-type>
-	   <channel-type id="playlist_repeat">
-        <item-type>Switch</item-type>
-        <label>Repeat</label>
-        <description>Toggle to repeat playlist</description>
-    </channel-type>
+	<channel-type id="playlist_repeat">
+		<item-type>Switch</item-type>
+		<label>Repeat</label>
+		<description>Toggle to repeat playlist</description>
+	</channel-type>
 
 </thing:thing-descriptions>
