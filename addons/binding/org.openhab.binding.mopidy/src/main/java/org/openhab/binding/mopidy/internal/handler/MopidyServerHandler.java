@@ -15,7 +15,6 @@ package org.openhab.binding.mopidy.internal.handler;
 import java.util.List;
 
 import org.eclipse.smarthome.core.library.types.DecimalType;
-import org.eclipse.smarthome.core.library.types.NextPreviousType;
 import org.eclipse.smarthome.core.library.types.OnOffType;
 import org.eclipse.smarthome.core.library.types.PercentType;
 import org.eclipse.smarthome.core.library.types.PlayPauseType;
@@ -40,20 +39,7 @@ import org.openhab.binding.mopidy.internal.server.message.event.RepeatChangedEve
 import org.openhab.binding.mopidy.internal.server.message.event.SeekedEvent;
 import org.openhab.binding.mopidy.internal.server.message.event.TrackPlaybackChanged;
 import org.openhab.binding.mopidy.internal.server.message.event.VolumeChangedEvent;
-import org.openhab.binding.mopidy.internal.server.message.rpc.GetCurrentPlayingTrack;
-import org.openhab.binding.mopidy.internal.server.message.rpc.GetMuteMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.GetPlaybackStateMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.GetRepeatMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.GetVolumeMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.NextMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.PauseMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.PlayMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.PreviousMessage;
 import org.openhab.binding.mopidy.internal.server.message.rpc.RpcMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.SetMuteMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.SetRepeatMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.SetVolumeMessage;
-import org.openhab.binding.mopidy.internal.server.message.rpc.StopMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +62,7 @@ public class MopidyServerHandler extends BaseBridgeHandler {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private BehaviorSubject<ServerConnection> connectionSubject = BehaviorSubject.create();
     private PublishSubject<EventMessage> eventMessageSubject = PublishSubject.create();
+    private CommandRequestMapper commandMapper = new CommandRequestMapper();
 
     public MopidyServerHandler(Bridge bridge) {
         super(bridge);
@@ -97,53 +84,15 @@ public class MopidyServerHandler extends BaseBridgeHandler {
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
         logger.info("handleCommand {}, {}", channelUID.getAsString(), command.toFullString());
-
-        if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYER)) {
-            if (PlayPauseType.PLAY.equals(command)) {
-                sendMessage(new PlayMessage());
-            } else if (PlayPauseType.PAUSE.equals(command)) {
-                sendMessage(new PauseMessage());
-            } else if (NextPreviousType.NEXT.equals(command)) {
-                sendMessage(new NextMessage());
-            } else if (NextPreviousType.PREVIOUS.equals(command)) {
-                sendMessage(new PreviousMessage());
-            } else if (command instanceof RefreshType) {
-                sendMessage(new GetPlaybackStateMessage());
-            }
-
-        } else if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_VOLUME_MUTE)) {
-            if (OnOffType.ON.equals(command)) {
-                sendMessage(new SetMuteMessage(true));
-            } else if (OnOffType.OFF.equals(command)) {
-                sendMessage(new SetMuteMessage(false));
-            } else if (command instanceof RefreshType) {
-                sendMessage(new GetMuteMessage());
-            }
-        } else if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_VOLUME)) {
-            if (command instanceof RefreshType) {
-                sendMessage(new GetVolumeMessage());
-            } else if (command instanceof DecimalType) {
-                DecimalType value = (DecimalType) command;
-                sendMessage(new SetVolumeMessage(value.intValue()));
-            }
-        } else if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_TRACK_NAME)) {
-            if (command instanceof RefreshType) {
-                sendMessage(new GetCurrentPlayingTrack());
-            }
-        } else if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_STOP)) {
+        RpcMessage message = commandMapper.transform(channelUID, command);
+        if (message != null) {
+            sendMessage(message);
+        }
+        if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_STOP)) {
             if (command instanceof RefreshType) {
                 updateState(MopidyBindingConstants.CHANNEL_PLAYBACK_STOP, OnOffType.OFF);
             } else if (OnOffType.ON.equals(command)) {
                 updateState(MopidyBindingConstants.CHANNEL_PLAYBACK_STOP, OnOffType.OFF);
-                sendMessage(new StopMessage());
-            }
-        } else if (channelUID.getId().equals(MopidyBindingConstants.CHANNEL_PLAYBACK_REPEAT)) {
-            if (OnOffType.ON.equals(command)) {
-                sendMessage(new SetRepeatMessage(true));
-            } else if (OnOffType.OFF.equals(command)) {
-                sendMessage(new SetRepeatMessage(false));
-            } else if (command instanceof RefreshType) {
-                sendMessage(new GetRepeatMessage());
             }
         }
     }
